@@ -1,0 +1,140 @@
+/* ========================= Gallery ========================= */
+.gallery {
+    column-count: 3;
+    column-gap: 16px;
+    padding: 10px;
+}
+  
+.gallery img {
+    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    display: block;
+    box-shadow:
+      0 0 12px rgba(var(--primary-accent-color-rgb), 0.3),
+      0 0 24px rgba(var(--primary-accent-color-rgb), 0.2);
+    transition: box-shadow 0.3s ease;
+  
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeUpImage 0.6s ease forwards;
+}
+  
+/* Medium screens: 2 columns */
+@media only screen and (max-width: 1024px) {
+    .gallery {
+      column-count: 2;
+    }
+}
+  
+/* Small screens: 1 column */
+@media only screen and (max-width: 769px) {
+    .gallery {
+      column-count: 1;
+    }
+}
+
+/* ========================= Gallery Selector ========================= */
+.gallery-selector {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns by default */
+    gap: 20px;
+    padding: 20px;
+    transition: grid-template-columns 0.3s ease; /* Smooth transition */
+}
+
+@media (max-width: 1024px) {
+    .gallery-selector {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns when the screen width is <= 1024px */
+    }
+}
+
+@media (max-width: 768px) {
+    .gallery-selector {
+        grid-template-columns: 1fr; /* 1 column when the screen width is <= 768px */
+    }
+}
+
+
+/* ========================= Gallery Card ========================= */
+.gallery-card {
+    position: relative;
+    height: 500px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+    opacity: 0; /* Start fully transparent */
+    animation: fadeInFromLeft 0.5s ease-out forwards;
+}
+
+.gallery-card:hover {
+    transform: translateY(-10px) scale(1.05); /* Ensure translateX(0) is kept on hover */
+}
+  
+.gallery-card:hover::after {
+    top: 25%;
+    opacity: 1;
+    transform: scale(1.0) translateY(-10px) translateX(0)
+}
+  
+.gallery-card .overlay {
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 16px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    border-radius: 0 0 12px 12px;
+}
+
+/* ========================= Gallery Info ========================= */
+.gallery-info {
+    width: 100%;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+  
+.gallery-info h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+  
+.gallery-info hr {
+    width: 90%;
+    height: 3px;
+    background-color: var(--primary-accent-color);
+    border: none;
+    border-radius: 2px;
+    margin: 10px 5%;
+}
+  
+.gallery-info p {
+    font-size: 1.1rem;
+    color: #bbb;
+}
+
+/* ========================= Keyframes ========================= */
+@keyframes fadeUpImage {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+}
+
+@keyframes fadeInFromLeft {
+    0% {
+      --entry-transform: translateX(-50px) scale(0.8);
+      opacity: 0;
+    }
+    100% {
+      --entry-transform: translateX(0) scale(1);
+      opacity: 1;
+    }
+}

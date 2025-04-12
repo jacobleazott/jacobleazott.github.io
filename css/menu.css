@@ -1,0 +1,136 @@
+/* ======================================================================= */
+/* =============================== HEADER ================================ */
+/* ======================================================================= */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--header-height);
+    padding: 0 10%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+}
+
+.logo {
+    position: relative;
+    font-size: 25px;
+    color: var(--white-color);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.logo::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--background-color);
+    animation: showRight 1s ease forwards;
+    animation-delay: .4s;
+}
+
+.nav_bar a {
+    font-size: 18px;
+    color: #ededed;
+    text-decoration: none;
+    font-weight: 500;
+    margin-left: 35px;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.nav_bar a:hover,
+.nav_bar a.active {
+    color: var(--primary-accent-color);
+}
+
+#nav-bar-overlay {
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: calc(var(--header-height) + 2rem);
+    opacity: 1;
+    z-index: 99;
+}
+
+/* ======================================================================= */
+/* ============================= HAMBURGER =============================== */
+/* ======================================================================= */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 25px;
+    cursor: pointer;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.hamburger .bar {
+    height: 4px;
+    width: 100%;
+    background-color: var(--white-color);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+/* Transform into X */
+.hamburger.open .bar:nth-child(1) {
+    transform: rotate(45deg) translate(10px, 5px);
+    background-color: var(--primary-accent-color);
+}
+  
+.hamburger.open .bar:nth-child(2) {
+    opacity: 0;
+}
+  
+.hamburger.open .bar:nth-child(3) {
+    transform: rotate(-45deg) translate(10px, -5px);
+    background-color: var(--primary-accent-color);
+}
+
+/* Media Query for Small Screens */
+@media (max-width: 1000px) {
+    .nav_bar {
+        display: none; /* Hide the navbar */
+        flex-direction: column;
+        position: absolute;
+        top: var(--header-height);
+        right: 0;
+        background-color: var(--background-color);
+        width: 100%;
+        padding: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        opacity: 0;
+        transform: translateY(-20px);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .nav_bar a {
+        margin: 10px 0;
+    }
+
+    .nav_bar.active {
+        display: flex;
+        opacity: 1;
+        transform: translateY(0);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .hamburger {
+        display: flex; /* Show hamburger icon on small screens */
+    }
+}
+
+/* ========================= Keyframes ========================= */
+@keyframes showRight {
+    100% {
+      width: 0;
+    }
+}

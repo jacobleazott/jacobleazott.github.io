@@ -6,8 +6,13 @@
   <title>My Portfolio</title>
 
   <!-- ===== CSS ===== -->
-  <link rel="stylesheet" href="css/tmp.css" />
-  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/menu.css" />
+  <link rel="stylesheet" href="css/gallery.css" />
+  <link rel="stylesheet" href="css/pages/home.css" />
+
+  <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' />
 </head>
 
 <body>
@@ -18,6 +23,11 @@
 
     <header class="header">
         <a href="pages/home.html" class="logo">Jacob Leazott</a>
+        <div id="hamburger" class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
         <nav class="nav_bar">
             <a href="pages/home.html" class="nav_link active">Home</a>
             <a href="pages/about.html" class="nav_link">About</a>
@@ -26,16 +36,11 @@
             <a href="pages/blogs.html" class="nav_link">Blogs</a>
             <a href="pages/contact.html" class="nav_link">Contact</a>
         </nav>
-
     </header>
 
     <main id="content"></main>
 
-    <!-- ===== IONICONS ===== -->
-    <script src="https://unpkg.com/ionicons@5.1.2/dist/ionicons.js"></script>
-
-    <!-- ===== JAVASCRIPT ===== -->
-    <script src="script.js"></script>
+    <script src="js/script.js"></script>
     
 </body>
 </html>
