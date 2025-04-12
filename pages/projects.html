@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <body>
-    <div id="star-container">
-        <div id="star-pattern"></div>
-        <div id="star-gradient-overlay"></div>
+    <div class="project-wrapper">
+        <div id="project-selector" class="project-selector"></div>
     </div>
     
-    <div class="card">
-        <h1> Projects </h1>
+    <div id="active-project-container" style="display: none;">
+        <button id="project-back-button" class="back-button" onclick="goBackToProjects()">← Back</button>
+        <div id="project-content" class="project-content"></div>
     </div>
 </body>

@@ -71,6 +71,7 @@
 
 .gallery-card:hover {
     transform: translateY(-10px) scale(1.05); /* Ensure translateX(0) is kept on hover */
+    box-shadow: 0 6px 24px rgba(var(--white-color-rgb), 0.5);
 }
   
 .gallery-card:hover::after {
@@ -114,6 +115,40 @@
 .gallery-info p {
     font-size: 1.1rem;
     color: #bbb;
+}
+
+#active-gallery-container {
+    position: relative;
+    z-index: 1;
+}
+
+/* ========================= Back Button ========================= */
+.back-button {
+    position: fixed !important;
+    top: calc(var(--header-height) * 1.5);
+    left: 20px;
+    padding: 0 16px;
+    height: 40px;
+    min-width: 60px;
+    border: none;
+    border-radius: 20px;
+    background-color: rgba(51, 51, 51, 0.6); /* semi-transparent */
+    color: var(--white-color);
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px); /* smooths over background */
+    transition: background-color 0.3s ease, opacity 0.3s ease;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.8);
+    opacity: 0.9;
+}
+
+.back-button:hover {
+    background-color: rgba(51, 51, 51, 0.8);
+    opacity: 1;
 }
 
 /* ========================= Keyframes ========================= */

@@ -44,9 +44,15 @@ document.querySelectorAll(".nav_link, .logo").forEach(link => {
 function performPageFunctions(page) {
     pageName = page.split('/').pop().replace(/\.html$/, '');
     switch (pageName) {
-      case "photography":
-        loadGalleryGroups();
-        break;
+        case "projects":
+            console.log('performPageFunctions Loading project cards...');
+            loadProjectCards();
+            
+            break;
+        case "photography":
+            console.log('performPageFunctions Loading gallery cards...');
+            loadGalleryGroups();
+            break;
     }
 }
   
@@ -108,23 +114,32 @@ function showGallery(tag, images) {
     const galleryDiv = document.getElementById('active-gallery');
     const titleEl = document.getElementById('gallery-title');
     const descEl = document.getElementById('gallery-description');
-  
+
     titleEl.textContent = galleryData[tag].title;
     descEl.textContent = galleryData[tag].description;
-  
     galleryDiv.innerHTML = '';
     galleryDiv.dataset.tag = tag;
-  
-    images.forEach(src => {
-      const img = document.createElement('img');
-      img.src = src;
-      img.loading = "lazy";
-      img.alt = tag;
-      galleryDiv.appendChild(img);
+
+    const imgElements = images.map((src, i) => {
+        const img = document.createElement('img');
+        img.src = src;
+        img.loading = "lazy";
+        img.alt = tag;
+        img.style.animationDelay = `${i * 0.1}s`; // default stagger
+        return img;
     });
-  
-    selector.style.display = "none";
-    galleryContainer.style.display = "block";
+
+    let loaded = 0;
+    imgElements.forEach(img => {
+        img.onload = () => {
+            loaded++;
+            if (loaded === imgElements.length) {
+                imgElements.forEach(el => galleryDiv.appendChild(el));
+                selector.style.display = "none";
+                galleryContainer.style.display = "block";
+            }
+        };
+    });
 }
   
 function generateImageUrls(base, count) {
@@ -137,4 +152,52 @@ function generateImageUrls(base, count) {
       }
     }
     return urls;
+}
+
+function goBackToSelector() {
+    document.getElementById('active-gallery-container').style.display = "none";
+    document.getElementById('gallery-selector').style.display = "grid";
+}
+
+/*========================== Project Selector ============================*/
+async function loadProjectCards() {
+    console.log('Loading project cards...');
+    const res = await fetch('assets/projects.json');
+    const projectData = await res.json();
+    const container = document.getElementById('project-selector');
+
+    Object.entries(projectData).forEach(([key, proj], index) => {
+        const card = document.createElement('div');
+        card.className = 'project-card';
+        card.style.animationDelay = `${index * 0.1}s`;
+
+        card.innerHTML = `
+            <h3>${proj.title}</h3>
+            <img src="${proj.img}" alt="${proj.title}" />
+            <p>${proj.description.replace(/\n/g, "<br>")}</p>
+        `;
+
+        card.onclick = () => showProjectDetail(proj.html_to_load);
+        container.appendChild(card);
+    });
+}
+
+function showProjectDetail(htmlFile) {
+    const selector = document.getElementById('project-selector');
+    const container = document.getElementById('active-project-container');
+    const content = document.getElementById('project-content');
+
+    selector.style.display = 'none';
+    container.style.display = 'block';
+
+    fetch(htmlFile)
+        .then(res => res.text())
+        .then(html => {
+            content.innerHTML = html;
+        });
+}
+
+function goBackToProjects() {
+    document.getElementById('active-project-container').style.display = 'none';
+    document.getElementById('project-selector').style.display = 'grid';
 }

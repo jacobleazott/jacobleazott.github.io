@@ -1,8 +1,16 @@
 :root {
     --header-height: 3rem;
     --background-color: #000000;
+    --background-color-rgb: 0, 0, 0;
+
+    --dark-gray-color: #181818;
+    --dark-gray-color-rgb: 24, 24, 24;
+
+    --light-gray-color: #484848;
+    --light-gray-color-rgb: 72, 72, 72;
     
     --white-color: #E6E7E9;
+    --white-color-rgb: 230, 231, 233;
 
     --primary-accent-color: #00abf0;
     --primary-accent-color-rgb: 0, 171, 240;
