@@ -131,13 +131,13 @@ function showGallery(tag, images) {
 
     let loaded = 0;
     imgElements.forEach(img => {
+        console.log("Loading image");
         img.onload = () => {
             loaded++;
-            if (loaded === imgElements.length) {
-                imgElements.forEach(el => galleryDiv.appendChild(el));
-                selector.style.display = "none";
-                galleryContainer.style.display = "block";
-            }
+            console.log("Loaded image" + loaded + " of " + imgElements.length);
+            imgElements.forEach(el => galleryDiv.appendChild(el));
+            selector.style.display = "none";
+            galleryContainer.style.display = "block";
         };
     });
 }
@@ -172,11 +172,12 @@ async function loadProjectCards() {
         card.style.animationDelay = `${index * 0.1}s`;
 
         card.innerHTML = `
-            <h3>${proj.title}</h3>
             <img src="${proj.img}" alt="${proj.title}" />
-            <p>${proj.description.replace(/\n/g, "<br>")}</p>
+            <div class="content">
+                <h3>${proj.title}</h3>
+                <p>${proj.description.replace(/\n/g, "<br>")}</p>
+            </div>
         `;
-
         card.onclick = () => showProjectDetail(proj.html_to_load);
         container.appendChild(card);
     });
