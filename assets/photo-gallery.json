@@ -22,6 +22,14 @@
         "title": "2024 Caribbean Cruise",
         "description": "2024-02-10 to 2024-02-17"
     },
+
+    "creek": {
+        "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/boulder-creek",
+        "count": 11,
+        "preview_img_idx": 6,
+        "title": "Boulder Creek",
+        "description": "Various Random Photos"
+    },
     
     "misc": {
         "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",

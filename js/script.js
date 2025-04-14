@@ -160,42 +160,43 @@ function goBackToSelector() {
 }
 
 /*========================== Project Selector ============================*/
-async function loadProjectCards() {
+function loadProjectCards() {
     console.log('Loading project cards...');
-    const res = await fetch('assets/projects.json');
-    const projectData = await res.json();
     const container = document.getElementById('project-selector');
+    const templates = document.querySelectorAll('template[id^="project-"]');
 
-    Object.entries(projectData).forEach(([key, proj], index) => {
+    templates.forEach((template, index) => {
+        const id = template.id.replace('project-', '');
+        const title = template.dataset.title;
+        const description = template.dataset.description;
+        const img = template.dataset.img;
+
         const card = document.createElement('div');
         card.className = 'project-card';
         card.style.animationDelay = `${index * 0.1}s`;
 
         card.innerHTML = `
-            <img src="${proj.img}" alt="${proj.title}" />
+            <img src="${img}" alt="${title}" />
             <div class="content">
-                <h3>${proj.title}</h3>
-                <p>${proj.description.replace(/\n/g, "<br>")}</p>
+                <h3>${title}</h3>
+                <p>${description.replace(/\n/g, "<br>")}</p>
             </div>
         `;
-        card.onclick = () => showProjectDetail(proj.html_to_load);
+
+        card.onclick = () => showProjectDetail(id);
         container.appendChild(card);
     });
 }
 
-function showProjectDetail(htmlFile) {
-    const selector = document.getElementById('project-selector');
-    const container = document.getElementById('active-project-container');
+function showProjectDetail(projectKey) {
+    const template = document.getElementById(`project-${projectKey}`);
     const content = document.getElementById('project-content');
 
-    selector.style.display = 'none';
-    container.style.display = 'block';
+    document.getElementById('project-selector').style.display = 'none';
+    document.getElementById('active-project-container').style.display = 'block';
 
-    fetch(htmlFile)
-        .then(res => res.text())
-        .then(html => {
-            content.innerHTML = html;
-        });
+    content.innerHTML = '';
+    content.appendChild(template.content.cloneNode(true));
 }
 
 function goBackToProjects() {

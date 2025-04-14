@@ -22,18 +22,6 @@
     text-decoration: none;
 }
 
-.logo::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-    background: var(--background-color);
-    animation: showRight 1s ease forwards;
-    animation-delay: .4s;
-}
-
 .nav_bar a {
     font-size: 18px;
     color: #ededed;
@@ -125,12 +113,5 @@
 
     .hamburger {
         display: flex; /* Show hamburger icon on small screens */
-    }
-}
-
-/* ========================= Keyframes ========================= */
-@keyframes showRight {
-    100% {
-      width: 0;
     }
 }
