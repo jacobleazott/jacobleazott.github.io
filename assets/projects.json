@@ -1,0 +1,68 @@
+{
+    "spotify": {
+        "title": "Spotify 2.0",
+        "description": "A sleek front-end redesign of the Spotify desktop interface. \n This project is a work in progress and is still under development.\n It is not a clone of the original Spotify UI.\n It is a clone of the UI of the Spotify web player.\n It is a clone of the UI of the Spotify desktop player.",
+        "img": "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403249/tucson-2024-25.jpg",
+        "html_to_load": "pages/projects/spotify-2.html"
+    },
+    "album_display": {
+        "title": "Album Artwork Display",
+        "description": "A modern web developer portfolio with animations and project filtering.",
+        "img": "https://res.cloudinary.com/dmfwvh2ir/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1744403249/tucson-2024-25.jpg",
+        "html_to_load": "pages/projects/portfolio.html"
+    },
+    "neon_signs": {
+        "title": "Neon Signs",
+        "description": "A modern web developer portfolio with animations and project filtering.",
+        "img": "https://res.cloudinary.com/dmfwvh2ir/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1744403249/tucson-2024-25.jpg",
+        "html_to_load": "pages/projects/portfolio.html"
+    },
+    "langtons_ant": {
+        "title": "Langton's Ant Generator",
+        "description": "A modern web developer portfolio with animations and project filtering.",
+        "img": "https://res.cloudinary.com/dmfwvh2ir/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1744403249/tucson-2024-25.jpg",
+        "html_to_load": "pages/projects/portfolio.html"
+    },
+    "chess_board": {
+        "title": "Chess Board Display",
+        "description": "A modern web developer portfolio with animations and project filtering.",
+        "img": "https://res.cloudinary.com/dmfwvh2ir/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1744403249/tucson-2024-25.jpg",
+        "html_to_load": "pages/projects/portfolio.html"
+    },
+    "christmas_tree": {
+        "title": "Christmas Tree",
+        "description": "A modern web developer portfolio with animations and project filtering.",
+        "img": "https://res.cloudinary.com/dmfwvh2ir/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1744403249/tucson-2024-25.jpg",
+        "html_to_load": "pages/projects/portfolio.html"
+    },
+    "hexagon_lights": {
+        "title": "Hexagon Lights",
+        "description": "A modern web developer portfolio with animations and project filtering.",
+        "img": "https://res.cloudinary.com/dmfwvh2ir/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1744403249/tucson-2024-25.jpg",
+        "html_to_load": "pages/projects/portfolio.html"
+    },
+    "liquor_shelf": {
+        "title": "Liquor Shelf",
+        "description": "A modern web developer portfolio with animations and project filtering.",
+        "img": "https://res.cloudinary.com/dmfwvh2ir/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1744403249/tucson-2024-25.jpg",
+        "html_to_load": "pages/projects/portfolio.html"
+    },
+    "chess_pieces": {
+        "title": "Chess Pieces",
+        "description": "A modern web developer portfolio with animations and project filtering.",
+        "img": "https://res.cloudinary.com/dmfwvh2ir/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1744403249/tucson-2024-25.jpg",
+        "html_to_load": "pages/projects/portfolio.html"
+    },
+    "rugs": {
+        "title": "Rugs",
+        "description": "A modern web developer portfolio with animations and project filtering.",
+        "img": "https://res.cloudinary.com/dmfwvh2ir/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1744403249/tucson-2024-25.jpg",
+        "html_to_load": "pages/projects/portfolio.html"
+    },
+    "infinity_bottles": {
+        "title": "Infinity Bottles",
+        "description": "A modern web developer portfolio with animations and project filtering.",
+        "img": "https://res.cloudinary.com/dmfwvh2ir/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1744403249/tucson-2024-25.jpg",
+        "html_to_load": "pages/projects/portfolio.html"
+    }
+}
