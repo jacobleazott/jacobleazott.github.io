@@ -1,68 +1,68 @@
 {
     "spotify": {
         "title": "Spotify 2.0",
-        "description": "A sleek front-end redesign of the Spotify desktop interface. \n This project is a work in progress and is still under development.\n It is not a clone of the original Spotify UI.\n It is a clone of the UI of the Spotify web player.\n It is a clone of the UI of the Spotify desktop player.",
-        "img": "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403249/tucson-2024-25.jpg",
+        "description": "Additional features, improvements, and data tracking using the Spotify API.",
+        "img": "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744582434/spotify20_shgxf4.jpg",
         "html_to_load": "pages/projects/spotify-2.html"
     },
     "album_display": {
         "title": "Album Artwork Display",
-        "description": "A modern web developer portfolio with animations and project filtering.",
-        "img": "https://res.cloudinary.com/dmfwvh2ir/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1744403249/tucson-2024-25.jpg",
-        "html_to_load": "pages/projects/portfolio.html"
+        "description": "Custom built monitor display to display all of my favorite songs and album art.",
+        "img": "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744580759/project-3.jpg",
+        "html_to_load": "pages/projects/album_display.html"
     },
     "neon_signs": {
         "title": "Neon Signs",
-        "description": "A modern web developer portfolio with animations and project filtering.",
-        "img": "https://res.cloudinary.com/dmfwvh2ir/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1744403249/tucson-2024-25.jpg",
-        "html_to_load": "pages/projects/portfolio.html"
+        "description": "Custom made LED neon signs with 3D printed enclosures.",
+        "img": "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744580759/project-5.jpg",
+        "html_to_load": "pages/projects/neon_signs.html"
     },
     "langtons_ant": {
         "title": "Langton's Ant Generator",
-        "description": "A modern web developer portfolio with animations and project filtering.",
-        "img": "https://res.cloudinary.com/dmfwvh2ir/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1744403249/tucson-2024-25.jpg",
-        "html_to_load": "pages/projects/portfolio.html"
+        "description": "Simple UI to generate Langton's Ant patterns. Allows users to specify the size of the pattern, the direction of the ant, the number of iterations, the color scheme, and the starting position.",
+        "img": "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744582793/langton_n0dnzr.jpg",
+        "html_to_load": "pages/projects/langtons_ant.html"
     },
     "chess_board": {
         "title": "Chess Board Display",
-        "description": "A modern web developer portfolio with animations and project filtering.",
-        "img": "https://res.cloudinary.com/dmfwvh2ir/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1744403249/tucson-2024-25.jpg",
-        "html_to_load": "pages/projects/portfolio.html"
+        "description": "A Christmas tree with 3D mapped locations for every light to be individually addressed.",
+        "img": "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744580759/project.jpg",
+        "html_to_load": "pages/projects/chess_board.html"
     },
     "christmas_tree": {
         "title": "Christmas Tree",
         "description": "A modern web developer portfolio with animations and project filtering.",
-        "img": "https://res.cloudinary.com/dmfwvh2ir/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1744403249/tucson-2024-25.jpg",
-        "html_to_load": "pages/projects/portfolio.html"
+        "img": "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744581839/projects-11_ys2pqs.jpg",
+        "html_to_load": "pages/projects/christmas_tree.html"
     },
     "hexagon_lights": {
         "title": "Hexagon Lights",
-        "description": "A modern web developer portfolio with animations and project filtering.",
-        "img": "https://res.cloudinary.com/dmfwvh2ir/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1744403249/tucson-2024-25.jpg",
-        "html_to_load": "pages/projects/portfolio.html"
+        "description": "Display piece with individually addressable LED lights mapped to a hexagonal grid.",
+        "img": "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744580759/project-4.jpg",
+        "html_to_load": "pages/projects/hexagon_lights.html"
     },
     "liquor_shelf": {
         "title": "Liquor Shelf",
-        "description": "A modern web developer portfolio with animations and project filtering.",
-        "img": "https://res.cloudinary.com/dmfwvh2ir/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1744403249/tucson-2024-25.jpg",
-        "html_to_load": "pages/projects/portfolio.html"
+        "description": "Custom wooden shelf with LED diffused shelves.",
+        "img": "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744580759/project-6.jpg",
+        "html_to_load": "pages/projects/liquor_shelf.html"
     },
     "chess_pieces": {
         "title": "Chess Pieces",
-        "description": "A modern web developer portfolio with animations and project filtering.",
-        "img": "https://res.cloudinary.com/dmfwvh2ir/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1744403249/tucson-2024-25.jpg",
-        "html_to_load": "pages/projects/portfolio.html"
+        "description": "Custom 3D printed quadruple weighted chess pieces.",
+        "img": "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744581840/projects-13_pnmqbm.jpg",
+        "html_to_load": "pages/projects/chess_pieces.html"
     },
     "rugs": {
         "title": "Rugs",
-        "description": "A modern web developer portfolio with animations and project filtering.",
-        "img": "https://res.cloudinary.com/dmfwvh2ir/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1744403249/tucson-2024-25.jpg",
-        "html_to_load": "pages/projects/portfolio.html"
+        "description": "A collection of custom rugs I have made.",
+        "img": "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744581839/projects-10_ztsrgq.jpg",
+        "html_to_load": "pages/projects/rugs.html"
     },
     "infinity_bottles": {
         "title": "Infinity Bottles",
-        "description": "A modern web developer portfolio with animations and project filtering.",
-        "img": "https://res.cloudinary.com/dmfwvh2ir/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1744403249/tucson-2024-25.jpg",
-        "html_to_load": "pages/projects/portfolio.html"
+        "description": "My continual growing infinity bottles of rum and whiskey.",
+        "img": "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744581840/projects-12_ctbmzq.jpg",
+        "html_to_load": "pages/projects/infinity_bottles.html"
     }
 }
