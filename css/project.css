@@ -2,30 +2,24 @@
 .project-selector {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    justify-content: center; /* center the grid */
+    justify-content: center;
     gap: 32px;
     width: 100%;
 }
-
 @media (max-width: 768px) {
     .project-card {
-        /* Keep default vertical layout and left alignment */
         padding: 16px;
         flex-direction: column;
-        align-items: flex-start; /* Maintain left alignment */
-        text-align: left; /* Keep text left-aligned */
+        align-items: flex-start;
+        text-align: left;
     }
-
     .project-card img {
-        /* Ensure images maintain a square aspect ratio and adjust accordingly */
-        width: 100%; /* Full width of the container */
-        height: auto; /* Maintain aspect ratio */
-        aspect-ratio: 1; /* Force square aspect ratio */
-        object-fit: cover; /* Ensure image covers the box */
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1;
+        object-fit: cover;
     }
-
     .project-card .content {
-        /* Ensure content within the card stays aligned to the left */
         text-align: left;
         align-items: flex-start;
     }
@@ -39,15 +33,12 @@
     padding: 40px 20px;
     margin: 0 auto;
     max-width: calc(5 * 320px + 4 * 32px);
-    margin: 0 auto;
 }
-
 .project-card {
     display: flex;
-    max-width: 100%;
     width: 100%;
     flex-direction: column;
-    align-items: flex-start; /* Keep text left aligned */
+    align-items: flex-start;
     background-color: rgba(var(--light-gray-color-rgb), 0.5);
     border-radius: 12px;
     padding: 20px;
@@ -58,30 +49,26 @@
     opacity: 0;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
-
 .project-card:hover {
     transform: translateY(-6px);
     box-shadow: 0 6px 24px rgba(var(--white-color-rgb), 0.5);
 }
-
-/* Title */
+@keyframes fadeInFromLeft {
+    from { opacity: 0; transform: translateX(-30px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
 .project-card h3 {
     font-size: 1.5rem;
     margin: 0;
     color: var(--secondary-accent-color);
 }
-
-/* Square Image Box */
 .project-card img {
     width: 100%;
     height: auto;
     object-fit: cover;
     border-radius: 12px;
-    display: block;
-    aspect-ratio: 1; /* Ensures the image stays square */
+    aspect-ratio: 1;
 }
-
-/* Description */
 .project-card p {
     font-size: 1rem;
     color: var(--white-color);
@@ -93,7 +80,152 @@
 /* ========================= Active Project ========================= */
 #project-content {
     padding: 40px;
-    max-width: 1000px;
+    width:  80%;
+    height: 100%;
     margin: 0 auto;
     color: var(--white-color);
+    position: relative;
+    overflow: hidden;
+}
+
+/* ===== Modal overlay & container ===== */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-container {
+    /* keep your existing rules... */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 80vw;
+    height: 80vh;
+    transform: translate(-50%, -50%) scale(0.8);
+    background: #111;
+    border-radius: 12px;
+    padding: 40px 20px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.7);
+    opacity: 0;
+    transition:
+        transform 0.3s ease,
+        opacity 0.3s ease,
+        width 0.3s ease,
+        height 0.3s ease;
+    backface-visibility: hidden;
+    will-change: transform, visibility;
+    overflow: hidden;    /* ← add this if not already */
+    /* remove any slide-* rules here */
+}
+
+/* show & zoom in baseline */
+.modal-overlay.open .modal-container {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* closing */
+.modal-overlay.closing .modal-container {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 0;
+}
+
+/* fullscreen */
+.modal-overlay.fullscreen {
+    background: #111;
+    backdrop-filter: none;
+}
+.modal-overlay.fullscreen .modal-container {
+    width: 100vw !important;
+    height: 100vh !important;
+    transform: translate(-50%, -50%) scale(1) !important;
+    border-radius: 0;
+    padding: 40px;
+}
+
+
+/* the thing we actually animate */
+.content-wrapper {
+    position: absolute;  /* ← new */
+    top: 0; left: 0;     /* ← new */
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    animation-fill-mode: both;
+    backface-visibility: hidden;
+    will-change: transform, opacity;
+}
+
+/* slide out */
+.content-wrapper.slide-out-left {
+    animation: cw-slideOutLeft 0.3s ease forwards;
+}
+.content-wrapper.slide-out-right {
+    animation: cw-slideOutRight 0.3s ease forwards;
+}
+
+/* slide in */
+.content-wrapper.slide-in-left {
+    animation: cw-slideInLeft 0.3s ease forwards;
+}
+.content-wrapper.slide-in-right {
+    animation: cw-slideInRight 0.3s ease forwards;
+}
+
+@keyframes cw-slideOutLeft {
+    from { transform: translateX(0) scale(1); opacity: 1; }
+    to   { transform: translateX(-100%) scale(0.8); opacity: 0; }
+}
+@keyframes cw-slideOutRight {
+    from { transform: translateX(0) scale(1); opacity: 1; }
+    to   { transform: translateX(100%) scale(0.8); opacity: 0; }
+}
+@keyframes cw-slideInLeft {
+    from { transform: translateX(-100%) scale(0.8); opacity: 0; }
+    to   { transform: translateX(0) scale(1); opacity: 1; }
+}
+@keyframes cw-slideInRight {
+    from { transform: translateX(100%) scale(0.8); opacity: 0; }
+    to   { transform: translateX(0) scale(1); opacity: 1; }
+}
+
+/* header & nav */
+.modal-header {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: flex;
+    gap: 8px;
+}
+.modal-header button {
+    background: transparent;
+    border: none;
+    font-size: 1.4rem;
+    color: #fff;
+    cursor: pointer;
+}
+.modal-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2rem;
+    color: #fff;
+    background: rgba(0,0,0,0.4);
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+    z-index: 10;
+}
+.modal-nav.prev { left: 1rem; }
+.modal-nav.next { right: 1rem; }
+
+/* prevent scroll */
+body.modal-open {
+    overflow: hidden;
 }
