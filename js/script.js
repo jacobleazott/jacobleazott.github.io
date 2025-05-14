@@ -1,108 +1,83 @@
 /*========================== Startup ============================*/
 window.addEventListener('DOMContentLoaded', handleRoute);
-window.addEventListener('hashchange',       handleRoute);
+window.addEventListener('hashchange', handleRoute);
 
 /*========================== Page Loading And Routing ============================*/
 let _routeId = 0;
 
-
-function loadScriptOnce(src) {
-    return new Promise((resolve, reject) => {
-      if (document.querySelector(`script[src="${src}"]`)) return resolve();
-      const s = document.createElement('script');
-      s.src = src;
-      s.onload  = resolve;
-      s.onerror = reject;
-      document.head.appendChild(s);
-    });
-  }
-  
-
-  async function handleRoute() {
+async function handleRoute() {
     const myId = ++_routeId;
-    const raw   = location.hash.slice(1);   // e.g. "pages/projects.html" or "project-foo"
+    const raw = location.hash.slice(1);
     updateActiveNavLink(location.hash);
     updateLayout();
-  
-    let pageToLoad   = 'pages/home.html';
+
+    let pageToLoad = 'pages/home.html';
     let postLoadHook = null;
-  
-    // ------- Projects listing -------
+
+    // ------- Project Selector -------
     if (raw === 'pages/projects.html') {
-      pageToLoad = 'pages/projects.html';
-      postLoadHook = async () => {
-        // load module, cards, handlers
-        await loadScriptOnce('js/project_module.js');
-        await window.loadProjectCards();
-        window.attachModalHandlers();
-      };
-  
-    // ------- Project preview or fullscreen -------
+        pageToLoad = 'pages/projects.html';
+        postLoadHook = async () => {
+            await window.loadProjectCards();
+            window.attachModalHandlers();
+        };
+
+    // ------- Project Preview -------
     } else if (raw.startsWith('project-')) {
-      // always load the projects.html shell
-      pageToLoad = 'pages/projects.html';
-      postLoadHook = async () => {
-        await loadScriptOnce('js/project_module.js');
-        await window.loadProjectCards();
-        window.attachModalHandlers();
-      
-        const key = raw.replace('project-', '');
-      
-        // Wait until the cards have definitely rendered
-        requestAnimationFrame(() => {
-          const idx   = projectKeys.indexOf(key);
-          const cardEl = document.querySelector(`.project-card:nth-child(${ idx + 1 })`);
-      
-          // Use a fallback if the card isn't found
-          window.openProject(key, { target: cardEl || undefined });
-        });
-      };
-  
-    // ------- Photography / gallery -------
+        pageToLoad = 'pages/projects.html';
+        postLoadHook = async () => {
+            await window.loadProjectCards();
+            await window.attachModalHandlers();
+
+            const key = raw.replace('project-', '');
+            window.openProject(key);
+        };
+
+    // ------- Photography / Gallery -------
     } else if (raw === 'pages/photography.html') {
-      pageToLoad   = 'pages/photography.html';
-      postLoadHook = loadGalleryGroups;
-  
+        pageToLoad = 'pages/photography.html';
+        postLoadHook = loadGalleryGroups;
+
     } else if (raw.startsWith('gallery-')) {
-      const tag = raw.replace('gallery-', '');
-      pageToLoad   = 'pages/photography.html';
-      postLoadHook = async () => {
-        if (!Object.keys(galleryData).length) {
-          await loadGalleryGroups();
-        }
-        const cfg  = galleryData[tag] || {};
-        const imgs = generateImageUrls(cfg.base, cfg.count);
-        showGallery(tag, imgs, false);
-      };
-  
+        const tag = raw.replace('gallery-', '');
+        pageToLoad = 'pages/photography.html';
+        postLoadHook = async () => {
+            if (!Object.keys(galleryData).length) {
+                await loadGalleryGroups();
+            }
+            const cfg = galleryData[tag] || {};
+            const imgs = generateImageUrls(cfg.base, cfg.count);
+            showGallery(tag, imgs, false);
+        };
+
     // ------- Any other raw ending in .html -------
     } else if (raw.endsWith('.html')) {
-      pageToLoad = raw;
+        pageToLoad = raw;
     }
-  
+
     // --- Load the page shell ---
     await loadPage(pageToLoad, /*pushState=*/false);
     if (myId !== _routeId) return;
-  
-    // --- Run post-load logic (cards, previews, galleries) ---
+
+    // --- Run post-load logic ---
     if (postLoadHook) {
-      await postLoadHook();
+        await postLoadHook();
     }
-  }
-  
+}
+
 function loadPage(page, pushState = true) {
     return new Promise((resolve) => {
         const content = document.getElementById('content');
-        
+
         if (pushState) {
             const current = history.state;
             if (!current || current.page !== page) {
                 history.pushState({ type: 'page', page }, '', `#${page}`);
             }
         }
-        
+
         content.classList.add('fade-out');
-        
+
         setTimeout(() => {
             fetch(page)
                 .then(response => {
@@ -124,9 +99,9 @@ function loadPage(page, pushState = true) {
 }
 
 /*========================== Menu ============================*/
-const navLink   = document.querySelectorAll('.nav_link');   
+const navLink = document.querySelectorAll('.nav_link');
 const hamburger = document.getElementById('hamburger');
-const navBar    = document.querySelector('.nav_bar');
+const navBar = document.querySelector('.nav_bar');
 
 function updateLayout() {
     if (window.innerWidth <= 1000) {
@@ -145,7 +120,7 @@ hamburger.addEventListener('click', () => {
     hamburger.classList.toggle('open');
 });
 
-function linkAction(){
+function linkAction() {
     navLink.forEach(n => n.classList.remove('active'));
     this.classList.add('active');
 }
@@ -156,15 +131,15 @@ function updateActiveNavLink(currentHash) {
     if (!currentHash || currentHash === '#') {
         currentHash = '#pages/home.html';
     }
-    
+
     let matchHref = currentHash;
-    
+
     if (currentHash.startsWith('#project-')) {
         matchHref = '#pages/projects.html';
     } else if (currentHash.startsWith('#gallery-')) {
         matchHref = '#pages/photography.html';
     }
-    
+
     document.querySelectorAll('.nav_link').forEach(link => {
         link.classList.toggle(
             'active',
@@ -174,17 +149,17 @@ function updateActiveNavLink(currentHash) {
 }
 
 /*========================== Photo Gallery ============================*/
-let galleryData = {};  // will hold your full JSON
+let galleryData = {}; // will hold your full JSON
 
 async function loadGalleryGroups() {
-    // 1) fetch JSON
+    // fetch JSON
     const res = await fetch('assets/photo-gallery.json');
     galleryData = await res.json();
-    
+
     const selector = document.getElementById('gallery-selector');
-    selector.innerHTML = ''; // clear existing
-    
-    // 2) build cards
+    selector.innerHTML = '';
+
+    // build cards
     Object.entries(galleryData).forEach(([tag, cfg], index) => {
         const images = generateImageUrls(cfg.base, cfg.count);
         const card = document.createElement('div');
@@ -195,38 +170,37 @@ async function loadGalleryGroups() {
         card.onclick = () => location.hash = `gallery-${tag}`;
         selector.appendChild(card);
     });
-    
-    // 3) wait for the browser to paint those cards
+
+    // wait for the browser to paint those cards
     return new Promise(requestAnimationFrame);
 }
-
 
 function showGallery(tag, images, pushState = true) {
     if (pushState) {
         history.pushState({ type: 'gallery', tag }, '', `#gallery-${tag}`);
     }
-    
+
     const selector = document.getElementById('gallery-selector');
     const galleryContainer = document.getElementById('active-gallery-container');
     const galleryDiv = document.getElementById('active-gallery');
     const titleEl = document.getElementById('gallery-title');
     const descEl = document.getElementById('gallery-description');
-    
+
     titleEl.textContent = galleryData[tag].title;
     descEl.textContent = galleryData[tag].description;
     galleryDiv.innerHTML = '';
     galleryDiv.dataset.tag = tag;
-    
+
     selector.style.display = "none";
     galleryContainer.style.display = "block";
-    
+
     images.forEach((src, i) => {
-      const img = document.createElement('img');
-      img.loading = "lazy";
-      img.alt = tag;
-      img.src = src;
-      img.style.animationDelay = `${i * 0.1}s`;
-      galleryDiv.appendChild(img);
+        const img = document.createElement('img');
+        img.loading = "lazy";
+        img.alt = tag;
+        img.src = src;
+        img.style.animationDelay = `${i * 0.1}s`;
+        galleryDiv.appendChild(img);
     });
 }
 

@@ -1,7 +1,10 @@
+/*========================== Globals ============================*/
 let projectData     = [];
 let projectKeys     = [];
 let currentKeyIndex = -1;
+let isAnimating     = false;
 
+/*========================== Project Loading ============================*/
 async function loadProjectCards() {
     const container = document.getElementById('project-selector');
     if (!container) return;
@@ -22,66 +25,30 @@ async function loadProjectCards() {
                 <h3>${data.title}</h3>
                 <p>${data.description.replace(/\n/g, '<br>')}</p>
             </div>`;
-        card.addEventListener('click', e => openProject(key, e));
+        card.addEventListener('click', () => openProject(key));
         container.appendChild(card);
     });
 }
 
-async function openProject(key, clickEvent, mode = 'preview') {
+async function openProject(key, mode = 'preview') {
     currentKeyIndex = projectKeys.indexOf(key);
     if (currentKeyIndex < 0) return;
 
     const overlay     = document.getElementById('project-modal');
-    const container   = overlay.querySelector('.modal-container');
     const contentWrap = overlay.querySelector('.content-wrapper');
-    if (!contentWrap) {
-        console.error('Missing .content-wrapper');
-        return;
-    }
-    document.body.classList.add('modal-open');
 
-    overlay.querySelector('.modal-expand').innerText =
-        mode === 'fullscreen' ? '⤡' : '⤢';
+    document.body.classList.add('disable-scroll');
+    overlay.classList.add('flex');
 
-    if (mode === 'preview') {
-        const card     = clickEvent?.target?.closest('.project-card');
-        const cardRect = card?.getBoundingClientRect();
-        if (cardRect) {
-            container.style.position        = 'fixed';
-            container.style.top             = `${cardRect.top}px`;
-            container.style.left            = `${cardRect.left}px`;
-            container.style.width           = `${cardRect.width}px`;
-            container.style.height          = `${cardRect.height}px`;
-            container.style.transformOrigin = 'center center';
-        }
-        overlay.style.display = 'flex';
+    const html = await fetch(projectData[key].html_to_load).then(r => r.text());
+    contentWrap.innerHTML = html;
 
-        requestAnimationFrame(() => {
-            container.style.transition = 'all 0.3s ease';
-            container.style.top        = '50%';
-            container.style.left       = '50%';
-            container.style.width      = '80vw';
-            container.style.height     = '80vh';
-            container.style.transform  = 'translate(-50%, -50%) scale(1)';
-        });
-    } else {
-        overlay.classList.add('fullscreen');
-        overlay.style.display = 'flex';
-    }
+    overlay.querySelector('.modal-nav.prev').classList.toggle('hidden', currentKeyIndex <= 0);
+    overlay.querySelector('.modal-nav.next').classList.toggle('hidden', currentKeyIndex >= projectKeys.length - 1);
 
     // force layout, trigger fade-in
     void overlay.offsetWidth;
     overlay.classList.add('open');
-
-    // load into the wrapper
-    const html = await fetch(projectData[key].html_to_load).then(r => r.text());
-    contentWrap.innerHTML = html;
-
-    // nav arrows
-    overlay.querySelector('.modal-nav.prev').style.display =
-        currentKeyIndex > 0 ? 'block' : 'none';
-    overlay.querySelector('.modal-nav.next').style.display =
-        currentKeyIndex < projectKeys.length - 1 ? 'block' : 'none';
 
     history.pushState({ view: mode, key }, '', `#project-${key}`);
 }
@@ -91,70 +58,42 @@ function closeProject() {
     if (!overlay) return;
 
     const container = overlay.querySelector('.modal-container');
-    document.body.classList.remove('modal-open');
+    document.body.classList.remove('disable-scroll');
+
     overlay.classList.remove('open');
     overlay.classList.add('closing');
 
-    container.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
-    container.style.transform  = 'translate(-50%, -50%) scale(0.5)';
-    container.style.opacity    = '0';
-
     setTimeout(() => {
-        overlay.classList.remove('closing');
-        overlay.style.display = 'none';
-        overlay.classList.remove('fullscreen');
-        container.removeAttribute('style');
+        overlay.classList.remove('closing', 'flex');
+        container.classList.remove('fullscreen');
     }, 300);
 
     history.pushState({ view: 'list' }, '', '#pages/projects.html');
 }
 
+/*========================== Project Navigation ============================*/
 function expandProject() {
     const overlay   = document.getElementById('project-modal');
     const container = overlay.querySelector('.modal-container');
     const btn       = overlay.querySelector('.modal-expand');
-    const isFS      = overlay.classList.contains('fullscreen');
 
-    container.style.position       = 'fixed';
-    container.style.top            = '50%';
-    container.style.left           = '50%';
-    container.style.transformOrigin= 'center center';
-    container.style.transition     = 'all 0.3s ease';
-
-    if (isFS) {
-        overlay.classList.remove('fullscreen');
-        btn.innerText = '⤢';
-        // shrink back
-        container.style.width      = '80vw';
-        container.style.height     = '80vh';
-        container.style.transform  = 'translate(-50%, -50%) scale(0.8)';
-        container.addEventListener('transitionend', () => {
-            container.removeAttribute('style');
-        }, { once: true });
-    } else {
-        overlay.classList.add('fullscreen');
-        btn.innerText = '⤡';
-        // expand to full
-        container.style.width      = '100vw';
-        container.style.height     = '100vh';
-        container.style.transform  = 'translate(-50%, -50%) scale(1)';
-        container.addEventListener('transitionend', () => {
-            container.removeAttribute('style');
-        }, { once: true });
-    }
+    const fullscreen = container.classList.toggle('fullscreen');
+    btn.innerText = fullscreen ? '⤡' : '⤢';
 }
 
 function navProject(dir) {
-    const overlay   = document.getElementById('project-modal');
-    if (!overlay || overlay.style.display !== 'flex') return;
+    if (isAnimating) return;
+    const overlay = document.getElementById('project-modal');
+    if (!overlay || !overlay.classList.contains('flex')) return;
 
     const contentWrap = overlay.querySelector('.content-wrapper');
-    const oldIndex    = currentKeyIndex;
-    const newIndex    = dir === 'next' ? oldIndex + 1 : oldIndex - 1;
+    const oldIndex = currentKeyIndex;
+    const newIndex = dir === 'next' ? oldIndex + 1 : oldIndex - 1;
     if (newIndex < 0 || newIndex >= projectKeys.length) return;
 
+    isAnimating = true;
     const outClass = dir === 'next' ? 'slide-out-left' : 'slide-out-right';
-    const inClass  = dir === 'next' ? 'slide-in-right' : 'slide-in-left';
+    const inClass = dir === 'next' ? 'slide-in-right' : 'slide-in-left';
 
     contentWrap.classList.add(outClass);
     contentWrap.addEventListener('animationend', function onOut(e) {
@@ -162,49 +101,38 @@ function navProject(dir) {
         contentWrap.removeEventListener('animationend', onOut);
         contentWrap.classList.remove(outClass);
 
-        // hide old, clear HTML
-        contentWrap.style.visibility = 'hidden';
-        contentWrap.innerHTML        = '';
+        contentWrap.classList.add('hidden');
+        contentWrap.innerHTML = '';
 
         currentKeyIndex = newIndex;
-
         fetch(projectData[projectKeys[newIndex]].html_to_load)
             .then(r => r.text())
             .then(txt => {
-                // inject new content
-                contentWrap.innerHTML       = txt;
-                contentWrap.style.visibility= '';
+                contentWrap.innerHTML = txt;
+                contentWrap.classList.remove('hidden');
                 void contentWrap.offsetWidth;
 
-                // slide in
                 contentWrap.classList.add(inClass);
                 contentWrap.addEventListener('animationend', function onIn(evt) {
                     if (!evt.animationName.startsWith('cw-slideIn')) return;
                     contentWrap.removeEventListener('animationend', onIn);
                     contentWrap.classList.remove(inClass);
+                    isAnimating = false;
                 }, { once: true });
 
-                // update nav buttons
-                overlay.querySelector('.modal-nav.prev').style.display =
-                    currentKeyIndex > 0 ? 'block' : 'none';
-                overlay.querySelector('.modal-nav.next').style.display =
-                    currentKeyIndex < projectKeys.length - 1 ? 'block' : 'none';
+                overlay.querySelector('.modal-nav.prev').classList.toggle('hidden', currentKeyIndex <= 0);
+                overlay.querySelector('.modal-nav.next').classList.toggle('hidden', currentKeyIndex >= projectKeys.length - 1);
 
-                history.pushState(
-                    { view: 'preview', key: projectKeys[newIndex] },
-                    '',
-                    `#project-${projectKeys[newIndex]}`
-                );
+                history.pushState({ view: 'preview', key: projectKeys[newIndex] }, '', `#project-${projectKeys[newIndex]}`);
             });
     }, { once: true });
 }
 
-
-
+/*========================== Project Handlers ============================*/
 function attachModalHandlers() {
     document.addEventListener('keydown', e => {
         const overlay = document.getElementById('project-modal');
-        if (!overlay || overlay.style.display !== 'flex') return;
+        if (!overlay || !overlay.classList.contains('flex')) return;
         if (e.key === 'Escape')      closeProject();
         if (e.key === 'ArrowRight')  navProject('next');
         if (e.key === 'ArrowLeft')   navProject('prev');
@@ -220,6 +148,7 @@ function attachModalHandlers() {
     });
 }
 
+/*========================== Project Exports ============================*/
 window.loadProjectCards    = loadProjectCards;
 window.attachModalHandlers = attachModalHandlers;
 window.openProject         = openProject;
