@@ -59,6 +59,8 @@ async function handleRoute() {
     await loadPage(pageToLoad, /*pushState=*/false);
     if (myId !== _routeId) return;
 
+    await new Promise(resolve => setTimeout(resolve, 300));
+
     // --- Run post-load logic ---
     if (postLoadHook) {
         await postLoadHook();

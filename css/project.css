@@ -5,6 +5,9 @@
     justify-content: center;
     gap: 32px;
     width: 100%;
+    padding: 40px 20px;
+    max-width: calc(5 * 320px + 4 * 32px);
+    margin: 0 auto;
 }
 
 @media (max-width: 768px) {
@@ -21,15 +24,6 @@
 }
 
 /* ========================= Project Card ========================= */
-.project-wrapper {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 32px;
-    padding: 40px 20px;
-    margin: 0 auto;
-    max-width: calc(5 * 320px + 4 * 32px);
-}
-
 .project-card {
     display: flex;
     width: 100%;
@@ -42,6 +36,7 @@
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     animation: fadeInFromLeft 0.5s ease-out forwards;
+    animation-delay: var(--proj-anim-delay, 0s);
     opacity: 0;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
@@ -139,27 +134,25 @@
 
 .content-wrapper {
     position: absolute;
-    /* top: 0; left: 0; */
     width: 100%;
     height: 100%;
     overflow-y: auto;
-    animation-fill-mode: both;
     backface-visibility: hidden;
     will-change: transform, opacity;
 }
 
 .content-wrapper.slide-out-left {
-    animation: cw-slideOutLeft 0.3s ease forwards;
+    animation: slideOutLeft 0.3s ease forwards;
 }
 .content-wrapper.slide-out-right {
-    animation: cw-slideOutRight 0.3s ease forwards;
+    animation: slideOutRight 0.3s ease forwards;
 }
 
 .content-wrapper.slide-in-left {
-    animation: cw-slideInLeft 0.3s ease forwards;
+    animation: slideInLeft 0.3s ease forwards;
 }
 .content-wrapper.slide-in-right {
-    animation: cw-slideInRight 0.3s ease forwards;
+    animation: slideInRight 0.3s ease forwards;
 }
 
 /* ========================= Project Modal Content ========================= */
@@ -215,22 +208,22 @@ body.disable-scroll {
     to   { opacity: 1; transform: translateX(0); }
 }
 
-@keyframes cw-slideOutLeft {
+@keyframes slideOutLeft {
     from { transform: translateX(0) scale(1); opacity: 1; }
     to   { transform: translateX(-100%) scale(0.8); opacity: 0; }
 }
 
-@keyframes cw-slideOutRight {
+@keyframes slideOutRight {
     from { transform: translateX(0) scale(1); opacity: 1; }
     to   { transform: translateX(100%) scale(0.8); opacity: 0; }
 }
 
-@keyframes cw-slideInLeft {
+@keyframes slideInLeft {
     from { transform: translateX(-100%) scale(0.8); opacity: 0; }
     to   { transform: translateX(0) scale(1); opacity: 1; }
 }
 
-@keyframes cw-slideInRight {
+@keyframes slideInRight {
     from { transform: translateX(100%) scale(0.8); opacity: 0; }
     to   { transform: translateX(0) scale(1); opacity: 1; }
 }

@@ -18,7 +18,7 @@ async function loadProjectCards() {
         const data = projectData[key];
         const card = document.createElement('div');
         card.className = 'project-card';
-        card.style.animationDelay = `${idx * 0.1}s`;
+        card.style.setProperty('--proj-anim-delay', `${idx * 0.1}s`);
         card.innerHTML = `
             <img src="${data.img}" alt="${data.title}">
             <div class="content">
@@ -30,7 +30,7 @@ async function loadProjectCards() {
     });
 }
 
-async function openProject(key, mode = 'preview') {
+async function openProject(key) {
     currentKeyIndex = projectKeys.indexOf(key);
     if (currentKeyIndex < 0) return;
 
@@ -46,11 +46,11 @@ async function openProject(key, mode = 'preview') {
     overlay.querySelector('.modal-nav.prev').classList.toggle('hidden', currentKeyIndex <= 0);
     overlay.querySelector('.modal-nav.next').classList.toggle('hidden', currentKeyIndex >= projectKeys.length - 1);
 
-    // force layout, trigger fade-in
+    // Force reflow before triggering animation
     void overlay.offsetWidth;
     overlay.classList.add('open');
 
-    history.pushState({ view: mode, key }, '', `#project-${key}`);
+    history.pushState({ key }, '', `#project-${key}`);
 }
 
 function closeProject() {
@@ -97,7 +97,7 @@ function navProject(dir) {
 
     contentWrap.classList.add(outClass);
     contentWrap.addEventListener('animationend', function onOut(e) {
-        if (!e.animationName.startsWith('cw-slideOut')) return;
+        if (!e.animationName.startsWith('slideOut')) return;
         contentWrap.removeEventListener('animationend', onOut);
         contentWrap.classList.remove(outClass);
 
@@ -114,7 +114,7 @@ function navProject(dir) {
 
                 contentWrap.classList.add(inClass);
                 contentWrap.addEventListener('animationend', function onIn(evt) {
-                    if (!evt.animationName.startsWith('cw-slideIn')) return;
+                    if (!evt.animationName.startsWith('slideIn')) return;
                     contentWrap.removeEventListener('animationend', onIn);
                     contentWrap.classList.remove(inClass);
                     isAnimating = false;
