@@ -1,0 +1,64 @@
+[
+    {
+        "company": "Northrop Grumman",
+        "position": "Principal Software Engineer",
+        "location": "Boulder, CO",
+        "range": "April 2023 – Present",
+        "bullets": [
+            "Initially contracted through Insight Global, converted to full-time February 2024. Responsiblities remained consistent.",
+            "Designed and authored new capabilities and features using C++ in an Agile environment.",
+            "Redesigned and re-implemented redundant fail-over critical systems.",
+            "Investigated and implemented various software fixes to mission critical systems.",
+            "Produced automated python and bash scripts to expedite development and release processes.",
+            "Lead efforts to update C++ and python code for required system upgrades.",
+            "Lead team unit test development and implementation for critical systems."
+        ]
+    },
+    {
+        "company": "Boeing",
+        "position": "Scrum Master and Software Engineer",
+        "range": "July 2021 - April 2023",
+        "bullets": [
+            "Authored Link 16 software capabilities including software design, implementation, unit testing, and integration testing.",
+            "Managed and prioritized work for a team of 13 engineers based upon customer needs and capacity.",
+            "Prepared and presented PI plans to management based upon priorities, capacity, dependencies, and stakeholders.",
+            "Executed test driven development for multiple Link 16 capabilities to ensure proper test coverage and software quality.",
+            "Generated test plans covering positive, negative, off-nominal, and edge case verification based upon system design.",
+            "Identified software issues and generated system and pilot impact reports for use in risk assessment.",
+            "Investigated and authored software fixes for numerous capabilities, from real jet flights to a variety of test facilities.",
+            "Collaborated with design engineers to ensure full design coverage of capabilities and identify any off-nominal cases."
+        ]
+    },
+    {
+        "company": "AMD",
+        "position": "Design Engineering Intern",
+        "range": "July 2020 - August 2020",
+        "bullets": [
+            "Authored an application to automate performance report generation of MI series GPU compute models.",
+            "Designed in a modular and scalable fashion for future GPU developments in all areas of functionality.",
+            "Automated collection, parsing, and interpolations for RocProfiler silicon chips and performance reports.",
+            "Generated high-level GPU metric data based on low level performance metrics and knowledge of GPU architecture.",
+            "Drafted various reports and documentation for the continuation of the project and technical maintenance."
+        ]
+    },
+    {
+        "company": "Hesse Center",
+        "position": "Engineering Tutor",
+        "range": "August 2017 - May 2021",
+        "bullets": [
+            "Facilitated comprehension of fundamental physics, mathematics, and engineering concepts of fellow students.",
+            "Communicated technical standards, helping students of various levels meet faculty and professional expectations."
+        ]
+    },
+    {
+        "company": "DOE",
+        "position": "Engineering Intern",
+        "range": "May 2020 - June 2020",
+        "bullets": [
+            "Developed a suite of Python tools that save over 1 year of labor annually.",
+            "Performed several audits verifying intellectual property compliance with Department of Energy standards.",
+            "Prepared a variety of technical documentation for Office of Science use, circulated to other National Laboratories."
+        ]
+    }
+]
+  

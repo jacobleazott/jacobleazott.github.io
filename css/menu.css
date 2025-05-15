@@ -84,7 +84,7 @@
 }
 
 /* Media Query for Small Screens */
-@media (max-width: 1000px) {
+@media (max-width: 1100px) {
     .nav_bar {
         display: none; /* Hide the navbar */
         flex-direction: column;
