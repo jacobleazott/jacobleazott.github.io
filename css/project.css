@@ -2,52 +2,33 @@
 .project-selector {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    justify-content: center; /* center the grid */
+    justify-content: center;
     gap: 32px;
     width: 100%;
+    padding: 40px 20px;
+    max-width: calc(5 * 320px + 4 * 32px);
+    margin: 0 auto;
 }
 
 @media (max-width: 768px) {
     .project-card {
-        /* Keep default vertical layout and left alignment */
         padding: 16px;
         flex-direction: column;
-        align-items: flex-start; /* Maintain left alignment */
-        text-align: left; /* Keep text left-aligned */
+        align-items: flex-start;
+        text-align: left;
     }
-
-    .project-card img {
-        /* Ensure images maintain a square aspect ratio and adjust accordingly */
-        width: 100%; /* Full width of the container */
-        height: auto; /* Maintain aspect ratio */
-        aspect-ratio: 1; /* Force square aspect ratio */
-        object-fit: cover; /* Ensure image covers the box */
-    }
-
     .project-card .content {
-        /* Ensure content within the card stays aligned to the left */
         text-align: left;
         align-items: flex-start;
     }
 }
 
 /* ========================= Project Card ========================= */
-.project-wrapper {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 32px;
-    padding: 40px 20px;
-    margin: 0 auto;
-    max-width: calc(5 * 320px + 4 * 32px);
-    margin: 0 auto;
-}
-
 .project-card {
     display: flex;
-    max-width: 100%;
     width: 100%;
     flex-direction: column;
-    align-items: flex-start; /* Keep text left aligned */
+    align-items: flex-start;
     background-color: rgba(var(--light-gray-color-rgb), 0.5);
     border-radius: 12px;
     padding: 20px;
@@ -55,6 +36,7 @@
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     animation: fadeInFromLeft 0.5s ease-out forwards;
+    animation-delay: var(--proj-anim-delay, 0s);
     opacity: 0;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
@@ -64,24 +46,20 @@
     box-shadow: 0 6px 24px rgba(var(--white-color-rgb), 0.5);
 }
 
-/* Title */
 .project-card h3 {
     font-size: 1.5rem;
     margin: 0;
     color: var(--secondary-accent-color);
 }
 
-/* Square Image Box */
 .project-card img {
     width: 100%;
     height: auto;
     object-fit: cover;
     border-radius: 12px;
-    display: block;
-    aspect-ratio: 1; /* Ensures the image stays square */
+    aspect-ratio: 1;
 }
 
-/* Description */
 .project-card p {
     font-size: 1rem;
     color: var(--white-color);
@@ -93,7 +71,159 @@
 /* ========================= Active Project ========================= */
 #project-content {
     padding: 40px;
-    max-width: 1000px;
+    width:  80%;
+    height: 100%;
     margin: 0 auto;
     color: var(--white-color);
+    position: relative;
+    overflow: hidden;
+}
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-overlay.flex {
+    display: flex;
+}
+
+.modal-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 80%;
+    height: 80%;
+    transform: translate(-50%, -50%) scale(0.8);
+    background: #111;
+    border-radius: 12px;
+    padding: 40px 20px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.7);
+    opacity: 0;
+    transition:
+        transform 0.3s ease,
+        opacity 0.3s ease,
+        width 0.3s ease,
+        height 0.3s ease;
+    backface-visibility: hidden;
+    will-change: transform, visibility;
+    overflow: hidden;
+}
+
+.modal-container.fullscreen {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.modal-overlay.open .modal-container {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+}
+
+.modal-overlay.closing .modal-container {
+    transform: translate(-50%, -50%) scale(0.5);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+}
+
+.content-wrapper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    backface-visibility: hidden;
+    will-change: transform, opacity;
+}
+
+.content-wrapper.slide-out-left {
+    animation: slideOutLeft 0.3s ease forwards;
+}
+.content-wrapper.slide-out-right {
+    animation: slideOutRight 0.3s ease forwards;
+}
+
+.content-wrapper.slide-in-left {
+    animation: slideInLeft 0.3s ease forwards;
+}
+.content-wrapper.slide-in-right {
+    animation: slideInRight 0.3s ease forwards;
+}
+
+/* ========================= Project Modal Content ========================= */
+.modal-header {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: flex;
+    gap: 8px;
+}
+
+.modal-header button {
+    background: transparent;
+    border: none;
+    font-size: 1.4rem;
+    color: #fff;
+    cursor: pointer;
+}
+
+.modal-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2rem;
+    color: #fff;
+    background: rgba(0,0,0,0.4);
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.modal-nav.prev {
+    left: 1rem;
+}
+
+.modal-nav.next {
+    right: 1rem;
+}
+
+.modal-nav.hidden {
+    display: none !important;
+}
+
+/* Disables scolling when the modal is open */
+body.disable-scroll {
+    overflow: hidden;
+}
+
+/* ========================= Keyframes ========================= */
+@keyframes fadeInFromLeft {
+    from { opacity: 0; transform: translateX(-30px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideOutLeft {
+    from { transform: translateX(0) scale(1); opacity: 1; }
+    to   { transform: translateX(-100%) scale(0.8); opacity: 0; }
+}
+
+@keyframes slideOutRight {
+    from { transform: translateX(0) scale(1); opacity: 1; }
+    to   { transform: translateX(100%) scale(0.8); opacity: 0; }
+}
+
+@keyframes slideInLeft {
+    from { transform: translateX(-100%) scale(0.8); opacity: 0; }
+    to   { transform: translateX(0) scale(1); opacity: 1; }
+}
+
+@keyframes slideInRight {
+    from { transform: translateX(100%) scale(0.8); opacity: 0; }
+    to   { transform: translateX(0) scale(1); opacity: 1; }
 }
