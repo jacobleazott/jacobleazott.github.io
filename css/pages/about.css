@@ -1,5 +1,7 @@
+/*===================================================================== */
+/*=========================== About Section =========================== */
+/*===================================================================== */
 .about {
-    padding: 5% 10%;
     color: white;
     display: flex;
     justify-content: center;
@@ -10,7 +12,7 @@
 }
 
 .about-content {
-    /* max-width: 1200px; */
+    padding-left: 5%;
     width: 80%;
     display: flex;
     flex-direction: column;
@@ -43,7 +45,9 @@
     font-size: 15px;
 }
 
-/* Photo Gallery */
+/*===================================================================== */
+/*=========================== Photo Gallery =========================== */
+/*===================================================================== */
 .photo-gallery {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -63,8 +67,11 @@
     transform: scale(1.04);
 }
 
-/* Experience Section */
+/*===================================================================== */
+/*========================= Education Section ========================= */
+/*===================================================================== */
 .experience-section {
+    padding-left: 5%;
     color: #ddd;
 }
 
@@ -94,24 +101,30 @@
     box-shadow: 0 6px 24px rgba(var(--white-color-rgb), 0.5);
 }
 
-
-/*======================== Job Section ========================= */
+/*===================================================================== */
+/*======================== Experience Section ========================= */
+/*===================================================================== */
 /* ========== Container ========== */
 #jobs {
-    width: 100%;
+    width: 90%;
+    padding-left: 5%;
+}
+
+#jobs h2 {
+    grid-column: 1 / -1;
+    font-size: 2rem;
+    margin-bottom: 24px;
 }
 
 .experience-container {
-    width: 100%;
     display: grid;
     grid-template-columns: 220px 1fr;
+    width: 100%;
     gap: 16px;
-    align-items: start;
     padding: 24px;
     border-radius: 12px;
     background-color: rgba(var(--light-gray-color-rgb), 0.3);
     box-shadow: 0 20px 30px -15px rgba(0, 0, 0, 0.8);
-
     opacity: 0;
     transform: translateX(-20px);
     transition: opacity 0.5s ease, transform 0.5s ease;
@@ -122,30 +135,20 @@
     transform: translateX(0);
 }
 
-.numbered-heading {
-    grid-column: 1 / -1;
-    font-size: 2rem;
-    margin-bottom: 24px;
-}
-
 /* ========== Tab List ========== */
 .tab-list {
     display: flex;
     flex-direction: column;
     position: relative;
-    padding-left: 2px;
     align-self: start;
 }
 
 .tab-list::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
     width: 2px;
     height: 100%;
     background-color: var(--light-gray-color);
-    z-index: 0;
 }
 
 .tab-list button {
@@ -156,10 +159,8 @@
     cursor: pointer;
     font-size: 1rem;
     color: var(--shaded-white-color);
-    border-left: 2px solid transparent;
     transition: background-color 0.3s ease, color 0.3s ease;
     border-radius: 4px;
-    position: relative;
 }
 
 .tab-list button:hover {
@@ -173,34 +174,25 @@
 
 .tab-highlight {
     position: absolute;
-    top: 0;
-    left: 0;
     width: 2px;
-    height: 0;
     background-color: var(--secondary-accent-color);
     transition: top 0.3s ease, height 0.3s ease;
-    z-index: 1;
 }
 
-/* ========== Panels ========== */
+/* ========== Tab Content ========== */
 .tab-panels {
-    position: relative;
-    overflow: hidden;
     transition: height 0.3s ease;
 }
 
 .tab-panels > div {
     display: none;
     opacity: 0;
-    pointer-events: none;
-    position: relative;
     transition: opacity 0.3s ease;
 }
 
 .tab-panels > div.visible {
     display: block;
     opacity: 1;
-    pointer-events: auto;
 }
 
 .tab-panels > div.fade-in-down {
@@ -211,11 +203,14 @@
     animation: fade-out-up 0.3s ease forwards;
 }
 
-/* Panel Content */
 .tab-panels h3 {
     margin: 0 0 8px;
     font-size: 1.4rem;
     color: var(--white-color);
+}
+
+.company {
+    color: var(--secondary-accent-color);
 }
 
 .tab-panels .range {
@@ -226,7 +221,6 @@
 
 .job-description {
     list-style: none;
-    padding: 0;
 }
 
 .job-description li {
@@ -243,32 +237,39 @@
     color: var(--secondary-accent-color);
 }
 
-/* ========== Animations ========== */
+/* ========== Keyframes ========== */
 @keyframes fade-in-down {
-    from { opacity: 0; transform: translateY(10px); }
+    from { opacity: 0; transform: translateY(20px); }
     to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fade-out-up {
     from { opacity: 1; transform: translateY(0); }
-    to   { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 0; transform: translateY(-20px); }
 }
 
 /* ========== Responsive ========== */
-@media (max-width: 600px) {
+@media (max-width: 800px) {
+    #jobs {
+        width: 100%;
+        padding-left: 0;
+    }
+
     .experience-container {
         grid-template-columns: 1fr;
     }
+
     .tab-list {
         flex-direction: row;
-        border-left: none;
         border-bottom: 2px solid var(--shaded-white-color);
     }
+
     .tab-list button {
         padding: 8px 16px;
-        border-left: none;
         border-bottom: 2px solid transparent;
+        text-align: center;
     }
+    
     .tab-list button[aria-selected="true"] {
         border-bottom-color: var(--secondary-accent-color);
     }

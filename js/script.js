@@ -52,7 +52,7 @@ async function handleRoute() {
     
     } else if (raw === 'pages/about.html') {
         pageToLoad = 'pages/about.html';
-        postLoadHook = loadJobsSection;
+        postLoadHook = initExperienceSection;
 
     // ------- Any other raw ending in .html -------
     } else if (raw.endsWith('.html')) {
@@ -232,77 +232,49 @@ function updatePanelsHeightAndVisibility(newIndex) {
     const panels = panelsContainer.querySelectorAll(':scope > div');
     const newPanel = panels[newIndex];
 
-    // Calculate minimum height from tab buttons
-    let tabButtonsTotal = 0;
-    btns.forEach(b => tabButtonsTotal += b.offsetHeight);
-    const minH = tabButtonsTotal;
-
-    // Show the new panel properly
     panels.forEach((panel, i) => {
         if (i === newIndex) {
             panel.style.display = 'block';
-            panel.setAttribute('aria-hidden', 'false');
             panel.classList.add('visible');
         } else {
             panel.style.display = 'none';
-            panel.setAttribute('aria-hidden', 'true');
             panel.classList.remove('visible');
         }
     });
 
-    // Calculate container height
-    const contentH = newPanel.scrollHeight;
-    const endH = Math.max(contentH, minH);
-
+    // Calculate minimum height from tab buttons and update container height
+    let tabButtonsTotal = 0;
+    btns.forEach(b => tabButtonsTotal += b.offsetHeight);
+    const endH = Math.max(newPanel.scrollHeight, tabButtonsTotal);
     panelsContainer.style.height = `${endH}px`;
 }
 
-async function loadJobsSection() {
-    const section = document.querySelector('#jobs');
-    if (!section) return;
-
-    try {
-        const res = await fetch('assets/experience.json');
-        const jobs = await res.json();
-        initJobs(jobs);
-    } catch (err) {
-        console.error('Couldn’t load jobs.json:', err);
-    }
-}
-
-function initJobs(jobs) {
-    const tabList        = document.querySelector('.tab-list');
-    const panelsContainer= document.querySelector('.tab-panels');
-    const expContainer   = document.querySelector('.experience-container');
-
-    // Clear any existing
-    tabList.innerHTML       = '';
+async function initExperienceSection() {
+    const res             = await fetch('assets/experience.json');
+    const jobs            = await res.json();
+    const tabList         = document.querySelector('.tab-list');
+    const panelsContainer = document.querySelector('.tab-panels');
+    const expContainer    = document.querySelector('.experience-container');
+    
+    tabList.innerHTML         = '';
     panelsContainer.innerHTML = '';
-
-    // Build tabs & panels
+    
     jobs.forEach((job, i) => {
         // Tab button
         const btn = document.createElement('button');
-        btn.setAttribute('role', 'tab');
         btn.id = `tab-${i}`;
-        btn.setAttribute('aria-controls', `panel-${i}`);
         btn.setAttribute('aria-selected', i === 0);
         btn.textContent = job.company;
         btn.addEventListener('click', () => selectJob(i));
         tabList.appendChild(btn);
-
+        
         // Panel
         const panel = document.createElement('div');
         panel.id = `panel-${i}`;
-        panel.setAttribute('role', 'tabpanel');
-        panel.setAttribute('aria-labelledby', `tab-${i}`);
-        panel.setAttribute('aria-hidden', i === 0 ? 'false' : 'true');
         if (i === 0) panel.classList.add('visible');
         panel.innerHTML = `
             <h3><span>${job.position}</span>
-                <span class="company"> - 
-                    <a target="_blank" rel="noopener noreferrer">${job.company}</a>
-                </span>
+                <span class="company"> - ${job.company} </span>
             </h3>
             <p class="range">${job.range}</p>
             <ul class="job-description">
@@ -311,17 +283,15 @@ function initJobs(jobs) {
         `;
         panelsContainer.appendChild(panel);
     });
-
+    
     // Insert highlight bar
     const highlight = document.createElement('div');
     highlight.classList.add('tab-highlight');
     tabList.appendChild(highlight);
-
-    // Position highlight & panelsContainer initial height
+    
     moveHighlightToIndex(0);
     panelsContainer.style.height = `${panelsContainer.scrollHeight}px`;
-
-    // Fade in the whole section
+    
     expContainer.getBoundingClientRect(); // force reflow
     expContainer.classList.add('loaded');
 }
@@ -331,43 +301,39 @@ function moveHighlightToIndex(index) {
     const highlight = document.querySelector('.tab-highlight');
     const btn       = btns[index];
     if (!btn || !highlight) return;
-
+    
     highlight.style.top    = `${btn.offsetTop}px`;
     highlight.style.height = `${btn.offsetHeight}px`;
 }
 
 function selectJob(newIndex) {
     if (newIndex === currentIndex) return;
-
+    
     const tabList = document.querySelector('.tab-list');
     const btns = tabList.querySelectorAll('button');
     const panelsContainer = document.querySelector('.tab-panels');
     const panels = panelsContainer.querySelectorAll(':scope > div');
-
+    
     const oldPanel = panels[currentIndex];
     const newPanel = panels[newIndex];
-
+    
     // Fade out old panel, then fade in new panel and resize container
     if (oldPanel) {
         oldPanel.classList.remove('visible');
         oldPanel.classList.add('fade-out-up');
-
+        
         setTimeout(() => {
             oldPanel.classList.remove('fade-out-up');
             oldPanel.style.display = 'none';
-            oldPanel.setAttribute('aria-hidden', 'true');
-
-            // Update height and show new panel
+            
             updatePanelsHeightAndVisibility(newIndex);
-
-            // Fade in new panel animation
             newPanel.classList.add('fade-in-down');
             setTimeout(() => {
                 newPanel.classList.remove('fade-in-down');
             }, 300);
         }, 300);
     }
-
+    
     btns.forEach((b, i) => b.setAttribute('aria-selected', i === newIndex));
     moveHighlightToIndex(newIndex);
     currentIndex = newIndex;
@@ -376,8 +342,6 @@ function selectJob(newIndex) {
 function onHashChange() {
     if (window.location.hash === '#pages/about.html') {
         window.addEventListener('resize', onResize);
-        // Also call once initially if needed
-        onResize();
     } else {
         window.removeEventListener('resize', onResize);
     }
@@ -387,8 +351,5 @@ function onResize() {
     updatePanelsHeightAndVisibility(currentIndex);
 }
 
-// Listen for hash changes
 window.addEventListener('hashchange', onHashChange);
-
-// Run once on load
 onHashChange();
