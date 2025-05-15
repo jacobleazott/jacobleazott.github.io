@@ -1,6 +1,6 @@
 /*========================== Startup ============================*/
 window.addEventListener('DOMContentLoaded', handleRoute);
-window.addEventListener('hashchange', handleRoute);
+window.addEventListener('hashchange',       handleRoute);
 
 /*========================== Page Loading And Routing ============================*/
 let _routeId = 0;
@@ -151,17 +151,15 @@ function updateActiveNavLink(currentHash) {
 }
 
 /*========================== Photo Gallery ============================*/
-let galleryData = {}; // will hold your full JSON
+let galleryData = {};
 
 async function loadGalleryGroups() {
-    // fetch JSON
     const res = await fetch('assets/photo-gallery.json');
     galleryData = await res.json();
 
     const selector = document.getElementById('gallery-selector');
     selector.innerHTML = '';
 
-    // build cards
     Object.entries(galleryData).forEach(([tag, cfg], index) => {
         const images = generateImageUrls(cfg.base, cfg.count);
         const card = document.createElement('div');
@@ -173,7 +171,6 @@ async function loadGalleryGroups() {
         selector.appendChild(card);
     });
 
-    // wait for the browser to paint those cards
     return new Promise(requestAnimationFrame);
 }
 
