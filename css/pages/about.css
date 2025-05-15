@@ -1,5 +1,7 @@
+/*===================================================================== */
+/*=========================== About Section =========================== */
+/*===================================================================== */
 .about {
-    padding: 5% 10%;
     color: white;
     display: flex;
     justify-content: center;
@@ -10,8 +12,8 @@
 }
 
 .about-content {
-    max-width: 1200px;
-    width: 100%;
+    padding-left: 5%;
+    width: 80%;
     display: flex;
     flex-direction: column;
     gap: 60px;
@@ -43,7 +45,9 @@
     font-size: 15px;
 }
 
-/* Photo Gallery */
+/*===================================================================== */
+/*=========================== Photo Gallery =========================== */
+/*===================================================================== */
 .photo-gallery {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -63,8 +67,11 @@
     transform: scale(1.04);
 }
 
-/* Experience Section */
+/*===================================================================== */
+/*========================= Education Section ========================= */
+/*===================================================================== */
 .experience-section {
+    padding-left: 5%;
     color: #ddd;
 }
 
@@ -92,4 +99,178 @@
 .exp-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 6px 24px rgba(var(--white-color-rgb), 0.5);
+}
+
+/*===================================================================== */
+/*======================== Experience Section ========================= */
+/*===================================================================== */
+/* ========== Container ========== */
+#jobs {
+    width: 90%;
+    padding-left: 5%;
+}
+
+#jobs h2 {
+    grid-column: 1 / -1;
+    font-size: 2rem;
+    margin-bottom: 24px;
+}
+
+.experience-container {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    width: 100%;
+    gap: 16px;
+    padding: 24px;
+    border-radius: 12px;
+    background-color: rgba(var(--light-gray-color-rgb), 0.3);
+    box-shadow: 0 20px 30px -15px rgba(0, 0, 0, 0.8);
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.experience-container.loaded {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* ========== Tab List ========== */
+.tab-list {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    align-self: start;
+}
+
+.tab-list::before {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 100%;
+    background-color: var(--light-gray-color);
+}
+
+.tab-list button {
+    background: none;
+    border: none;
+    padding: 12px 0 12px 10px;
+    text-align: left;
+    cursor: pointer;
+    font-size: 1rem;
+    color: var(--shaded-white-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 4px;
+}
+
+.tab-list button:hover {
+    background-color: rgba(255, 195, 0, 0.08);
+}
+
+.tab-list button[aria-selected="true"] {
+    color: var(--secondary-accent-color);
+    background-color: rgba(255, 195, 0, 0.15);
+}
+
+.tab-highlight {
+    position: absolute;
+    width: 2px;
+    background-color: var(--secondary-accent-color);
+    transition: top 0.3s ease, height 0.3s ease;
+}
+
+/* ========== Tab Content ========== */
+.tab-panels {
+    transition: height 0.3s ease;
+}
+
+.tab-panels > div {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.tab-panels > div.visible {
+    display: block;
+    opacity: 1;
+}
+
+.tab-panels > div.fade-in-down {
+    animation: fade-in-down 0.3s ease forwards;
+}
+
+.tab-panels > div.fade-out-up {
+    animation: fade-out-up 0.3s ease forwards;
+}
+
+.tab-panels h3 {
+    margin: 0 0 8px;
+    font-size: 1.4rem;
+    color: var(--white-color);
+}
+
+.company {
+    color: var(--secondary-accent-color);
+}
+
+.tab-panels .range {
+    font-size: 1rem;
+    margin-bottom: 16px;
+    color: var(--shaded-white-color);
+}
+
+.job-description {
+    list-style: none;
+}
+
+.job-description li {
+    position: relative;
+    padding-left: 1.2em;
+    margin-bottom: 0.5em;
+}
+
+.job-description li::before {
+    content: "▹";
+    position: absolute;
+    left: 0;
+    top: 0.2em;
+    color: var(--secondary-accent-color);
+}
+
+/* ========== Keyframes ========== */
+@keyframes fade-in-down {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-out-up {
+    from { opacity: 1; transform: translateY(0); }
+    to   { opacity: 0; transform: translateY(-20px); }
+}
+
+/* ========== Responsive ========== */
+@media (max-width: 800px) {
+    #jobs {
+        width: 100%;
+        padding-left: 0;
+    }
+
+    .experience-container {
+        grid-template-columns: 1fr;
+    }
+
+    .tab-list {
+        flex-direction: row;
+        border-bottom: 2px solid var(--shaded-white-color);
+    }
+
+    .tab-list button {
+        padding: 8px 16px;
+        border-bottom: 2px solid transparent;
+        text-align: center;
+    }
+    
+    .tab-list button[aria-selected="true"] {
+        border-bottom-color: var(--secondary-accent-color);
+    }
 }
