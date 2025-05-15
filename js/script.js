@@ -10,72 +10,76 @@ async function handleRoute() {
     const raw = location.hash.slice(1);
     updateActiveNavLink(location.hash);
     updateLayout();
-  
+
     let pageToLoad = 'pages/home.html';
     let postLoadHook = null;
-    let hookArgs = [];
-  
+
+    // ------- Project Selector -------
     if (raw === 'pages/projects.html') {
         pageToLoad = 'pages/projects.html';
-        postLoadHook = loadProjectCards;
+        postLoadHook = async () => {
+            await window.loadProjectCards();
+            window.attachModalHandlers();
+        };
+
+    // ------- Project Preview -------
     } else if (raw.startsWith('project-')) {
-        const slug = raw.replace('project-', '');
         pageToLoad = 'pages/projects.html';
         postLoadHook = async () => {
-            if (!projectData || Object.keys(projectData).length === 0) {
-                try {
-                    const res = await fetch('assets/projects.json');
-                    projectData = await res.json();
-                } catch (err) {
-                    console.error('Failed to load project JSON:', err);
-                    return;
-                }
-            }
-            showProjectDetail(slug, false);
+            await window.loadProjectCards();
+            await window.attachModalHandlers();
+
+            const key = raw.replace('project-', '');
+            window.openProject(key);
         };
+
+    // ------- Photography / Gallery -------
     } else if (raw === 'pages/photography.html') {
         pageToLoad = 'pages/photography.html';
         postLoadHook = loadGalleryGroups;
+
     } else if (raw.startsWith('gallery-')) {
         const tag = raw.replace('gallery-', '');
         pageToLoad = 'pages/photography.html';
         postLoadHook = async () => {
-            if (Object.keys(galleryData).length === 0) {
+            if (!Object.keys(galleryData).length) {
                 await loadGalleryGroups();
             }
             const cfg = galleryData[tag] || {};
-            if (!cfg.base || !cfg.count) {
-              console.warn(`Invalid gallery tag: ${tag}`);
-              return;
-            }
             const imgs = generateImageUrls(cfg.base, cfg.count);
             showGallery(tag, imgs, false);
         };
+
+    // ------- Any other raw ending in .html -------
     } else if (raw.endsWith('.html')) {
         pageToLoad = raw;
     }
-    
-    await loadPage(pageToLoad, false);
+
+    // --- Load the page shell ---
+    await loadPage(pageToLoad, /*pushState=*/false);
     if (myId !== _routeId) return;
-    
+
+    await new Promise(resolve => setTimeout(resolve, 300));
+
+    // --- Run post-load logic ---
     if (postLoadHook) {
-        await postLoadHook(...hookArgs);
+        await postLoadHook();
     }
-  }
-  
+}
+
 function loadPage(page, pushState = true) {
     return new Promise((resolve) => {
         const content = document.getElementById('content');
-        
+
         if (pushState) {
             const current = history.state;
             if (!current || current.page !== page) {
                 history.pushState({ type: 'page', page }, '', `#${page}`);
             }
         }
-        
+
         content.classList.add('fade-out');
-        
+
         setTimeout(() => {
             fetch(page)
                 .then(response => {
@@ -97,9 +101,9 @@ function loadPage(page, pushState = true) {
 }
 
 /*========================== Menu ============================*/
-const navLink   = document.querySelectorAll('.nav_link');   
+const navLink = document.querySelectorAll('.nav_link');
 const hamburger = document.getElementById('hamburger');
-const navBar    = document.querySelector('.nav_bar');
+const navBar = document.querySelector('.nav_bar');
 
 function updateLayout() {
     if (window.innerWidth <= 1000) {
@@ -118,7 +122,7 @@ hamburger.addEventListener('click', () => {
     hamburger.classList.toggle('open');
 });
 
-function linkAction(){
+function linkAction() {
     navLink.forEach(n => n.classList.remove('active'));
     this.classList.add('active');
 }
@@ -129,15 +133,15 @@ function updateActiveNavLink(currentHash) {
     if (!currentHash || currentHash === '#') {
         currentHash = '#pages/home.html';
     }
-    
+
     let matchHref = currentHash;
-    
+
     if (currentHash.startsWith('#project-')) {
         matchHref = '#pages/projects.html';
     } else if (currentHash.startsWith('#gallery-')) {
         matchHref = '#pages/photography.html';
     }
-    
+
     document.querySelectorAll('.nav_link').forEach(link => {
         link.classList.toggle(
             'active',
@@ -147,17 +151,15 @@ function updateActiveNavLink(currentHash) {
 }
 
 /*========================== Photo Gallery ============================*/
-let galleryData = {};  // will hold your full JSON
+let galleryData = {};
 
 async function loadGalleryGroups() {
-    // 1) fetch JSON
     const res = await fetch('assets/photo-gallery.json');
     galleryData = await res.json();
-  
+
     const selector = document.getElementById('gallery-selector');
-    selector.innerHTML = ''; // clear existing
-  
-    // 2) build cards
+    selector.innerHTML = '';
+
     Object.entries(galleryData).forEach(([tag, cfg], index) => {
         const images = generateImageUrls(cfg.base, cfg.count);
         const card = document.createElement('div');
@@ -168,41 +170,38 @@ async function loadGalleryGroups() {
         card.onclick = () => location.hash = `gallery-${tag}`;
         selector.appendChild(card);
     });
-  
-    // 3) wait for the browser to paint those cards
+
     return new Promise(requestAnimationFrame);
 }
 
-
 function showGallery(tag, images, pushState = true) {
     if (pushState) {
-      history.pushState({ type: 'gallery', tag }, '', `#gallery-${tag}`);
+        history.pushState({ type: 'gallery', tag }, '', `#gallery-${tag}`);
     }
-  
+
     const selector = document.getElementById('gallery-selector');
     const galleryContainer = document.getElementById('active-gallery-container');
     const galleryDiv = document.getElementById('active-gallery');
     const titleEl = document.getElementById('gallery-title');
     const descEl = document.getElementById('gallery-description');
-  
+
     titleEl.textContent = galleryData[tag].title;
     descEl.textContent = galleryData[tag].description;
     galleryDiv.innerHTML = '';
     galleryDiv.dataset.tag = tag;
-  
+
     selector.style.display = "none";
     galleryContainer.style.display = "block";
-  
+
     images.forEach((src, i) => {
-      const img = document.createElement('img');
-      img.loading = "lazy";
-      img.alt = tag;
-      img.src = src;
-      img.style.animationDelay = `${i * 0.1}s`;
-      galleryDiv.appendChild(img);
+        const img = document.createElement('img');
+        img.loading = "lazy";
+        img.alt = tag;
+        img.src = src;
+        img.style.animationDelay = `${i * 0.1}s`;
+        galleryDiv.appendChild(img);
     });
 }
-  
 
 function generateImageUrls(base, count) {
     const urls = [];
@@ -214,65 +213,4 @@ function generateImageUrls(base, count) {
         }
     }
     return urls;
-}
-
-/*========================== Project Selector ============================*/
-let projectData = {};
-
-async function loadProjectCards() {
-    const container = document.getElementById('project-selector');
-    container.innerHTML = ''; // Clear previous cards
-    
-    try {
-        const res = await fetch('assets/projects.json');
-        projectData = await res.json(); // Store globally
-    } catch (err) {
-        console.error('Failed to load project JSON:', err);
-        return;
-    }
-    
-    Object.entries(projectData).forEach(([key, data], index) => {
-        const { title, description, img } = data;
-        
-        const card = document.createElement('div');
-        card.className = 'project-card';
-        card.style.animationDelay = `${index * 0.1}s`;
-        
-        card.innerHTML = `
-            <img src="${img}" alt="${title}" />
-            <div class="content">
-                <h3>${title}</h3>
-                <p>${description.replace(/\n/g, "<br>")}</p>
-            </div>
-        `;
-        
-        card.onclick = () => location.hash = `#project-${key}`;
-        container.appendChild(card);
-    });
-}
-
-async function showProjectDetail(projectKey, pushState = true) {
-    const content = document.getElementById('project-content');
-    const project = projectData[projectKey];
-    
-    if (!project || !project.html_to_load) {
-        content.innerHTML = `<p class="text-red-500">Project data not found.</p>`;
-        return;
-    }
-    
-    if (pushState) {
-        history.pushState({ type: 'project', key: projectKey }, '', `#project-${projectKey}`);
-    }
-    
-    document.getElementById('project-selector').style.display = 'none';
-    document.getElementById('active-project-container').style.display = 'block';
-    
-    try {
-        const res = await fetch(project.html_to_load);
-        const html = await res.text();
-        content.innerHTML = html;
-    } catch (err) {
-        content.innerHTML = `<p class="text-red-500">Failed to load project page.</p>`;
-        console.error('Error loading project HTML:', err);
-    }
 }

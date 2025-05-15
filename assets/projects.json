@@ -25,13 +25,13 @@
     },
     "chess_board": {
         "title": "Chess Board Display",
-        "description": "A Christmas tree with 3D mapped locations for every light to be individually addressed.",
+        "description": "Custom 3D printed wall decor that \"plays\" through chess games",
         "img": "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744580759/project.jpg",
         "html_to_load": "pages/projects/chess_board.html"
     },
     "christmas_tree": {
         "title": "Christmas Tree",
-        "description": "A modern web developer portfolio with animations and project filtering.",
+        "description": "A Christmas tree with 3D mapped locations for every light to be individually addressed.",
         "img": "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744581839/projects-11_ys2pqs.jpg",
         "html_to_load": "pages/projects/christmas_tree.html"
     },
