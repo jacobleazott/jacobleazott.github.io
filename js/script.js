@@ -178,19 +178,17 @@ async function loadGalleryGroups() {
     return new Promise(requestAnimationFrame);
 }
 
-function showGallery(tag, images, pushState = true) {
-    if (pushState) {
-        history.pushState({ type: 'gallery', tag }, '', `#gallery-${tag}`);
-    }
-
-    const selector = document.getElementById('gallery-selector');
+function showGallery(tag, images) {
+    const selector         = document.getElementById('gallery-selector');
     const galleryContainer = document.getElementById('active-gallery-container');
-    const galleryDiv = document.getElementById('active-gallery');
-    const titleEl = document.getElementById('gallery-title');
-    const descEl = document.getElementById('gallery-description');
+    const galleryDiv       = document.getElementById('active-gallery');
 
-    titleEl.textContent = galleryData[tag].title;
-    descEl.textContent = galleryData[tag].description;
+    document.getElementById('gallery-title').textContent       = galleryData[tag].title;
+    document.getElementById('gallery-description').textContent = galleryData[tag].description;
+    document.getElementById('gallery-location').textContent    = galleryData[tag].location;
+    document.getElementById('gallery-date').textContent        = galleryData[tag].date;
+    document.getElementById('gallery-gear').textContent        = galleryData[tag].gear;
+
     galleryDiv.innerHTML = '';
     galleryDiv.dataset.tag = tag;
 

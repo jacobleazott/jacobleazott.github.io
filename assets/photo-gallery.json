@@ -1,18 +1,24 @@
 {
-    "tucson-2024": {
+    "tucson": {
         "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/tucson-2024",
         "count": 26,
         "preview_img_idx": 23,
-        "title": "Tucson 2024",
-        "description": "Tucson 2024"
+        "title": "Tucson",
+        "description": "This was a visit to a good friend living now in Tucson, we hiked, laughed, and visiting quite a few sites",
+        "location": "Tucson, AZ. Pontatoc Ridge, AZ. (NEED MORE)",
+        "date": "2024-12-05 - 2024-12-07",
+        "gear": "Sony A7II and Samyang 35-150mm f/2.8"
     },
-
-    "anne": {
+    
+    "anne_trail_2023": {
         "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/anne",
         "count": 10,
         "preview_img_idx": 5,
         "title": "Anne U. White Trail",
-        "description": "2024-11-03"
+        "description": "",
+        "location": "Anne U. White Trail, Boulder, CO",
+        "date": "2024-11-03",
+        "gear": "Sony A7II and Rokinon 85mm f/1.5"
     },
     
     "cruise-2024": {
@@ -20,15 +26,21 @@
         "count": 17,
         "preview_img_idx": 13,
         "title": "2024 Caribbean Cruise",
-        "description": "2024-02-10 to 2024-02-17"
+        "description": "",
+        "location": "Norwegian Escape. Port Canaveral, Florida. Cozumel, Mexico. Ocho Rios, Jamaica. Great Stirrup Cay, Bahamas",
+        "date": "2024-02-10 - 2024-02-17",
+        "gear": "Sony A7II and Zeiss 24-70mm f/4 Lens"
     },
-
-    "creek": {
+    
+    "boulder_creek": {
         "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/boulder-creek",
         "count": 11,
         "preview_img_idx": 6,
         "title": "Boulder Creek",
-        "description": "Various Random Photos"
+        "description": "",
+        "location": "Boulder, CO",
+        "date": "2024-11-16",
+        "gear": "Sony A7II and Samyang 35-150mm f2.8 Lens"
     },
     
     "misc": {
@@ -36,6 +48,218 @@
         "count": 4,
         "preview_img_idx": 1,
         "title": "Miscellaneous",
-        "description": "Various Random Photos"
+        "description": "Various Random Photos",
+        "location": "",
+        "date": "",
+        "gear": ""
+    },
+
+    "elgin_park": {
+        "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
+        "count": 2,
+        "preview_img_idx": 0,
+        "title": "Elgin Park",
+        "description": " ",
+        "location": " ",
+        "date": " ",
+        "gear": " "
+    },
+
+    "valparaiso": {
+        "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
+        "count": 2,
+        "preview_img_idx": 0,
+        "title": "Valparaiso University",
+        "description": "",
+        "location": "",
+        "date": "",
+        "gear": ""
+    },
+
+    "las_vegas": {
+        "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
+        "count": 2,
+        "preview_img_idx": 0,
+        "title": "Las Vegas",
+        "description": "",
+        "location": "",
+        "date": "",
+        "gear": ""
+    },
+
+    "bermuda_cruise": {
+        "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
+        "count": 2,
+        "preview_img_idx": 0,
+        "title": "Bermuda Cruise",
+        "description": "",
+        "location": "",
+        "date": "",
+        "gear": ""
+    },
+
+    "cruise_2021": {
+        "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
+        "count": 2,
+        "preview_img_idx": 0,
+        "title": "Caribbean Cruise 2021",
+        "description": "",
+        "location": "",
+        "date": "",
+        "gear": ""
+    },
+
+    "rocky_mountain_2023": {
+        "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
+        "count": 2,
+        "preview_img_idx": 0,
+        "title": "Rocky Mountain National Park 2023",
+        "description": "",
+        "location": "",
+        "date": "",
+        "gear": ""
+    },
+
+    "lost_gultch": {
+        "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
+        "count": 2,
+        "preview_img_idx": 0,
+        "title": "Lost Gultch Overlook",
+        "description": "",
+        "location": "",
+        "date": "",
+        "gear": ""
+    },
+
+    "rocky_mountain_2023_2": {
+        "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
+        "count": 2,
+        "preview_img_idx": 0,
+        "title": "Rocky Mountain National Park 2023v2",
+        "description": "",
+        "location": "",
+        "date": "",
+        "gear": ""
+    },
+
+    "pikes_peak_2023": {
+        "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
+        "count": 2,
+        "preview_img_idx": 0,
+        "title": "Pikes Peak 2023",
+        "description": "",
+        "location": "",
+        "date": "",
+        "gear": ""
+    },
+
+    "garden_of_the_gods_2023": {
+        "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
+        "count": 2,
+        "preview_img_idx": 0,
+        "title": "Garden of the gods 2023",
+        "description": "",
+        "location": "",
+        "date": "",
+        "gear": ""
+    },
+
+    "winter_park_2023": {
+        "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
+        "count": 2,
+        "preview_img_idx": 0,
+        "title": "Winter Park",
+        "description": "",
+        "location": "",
+        "date": "",
+        "gear": ""
+    },
+
+    "lefthand_canyon_trail_2024": {
+        "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
+        "count": 2,
+        "preview_img_idx": 0,
+        "title": "Left Hand Canyon Trail",
+        "description": "",
+        "location": "",
+        "date": "",
+        "gear": ""
+    },
+
+    "christmas_2024": {
+        "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
+        "count": 2,
+        "preview_img_idx": 0,
+        "title": "Christmas 2024",
+        "description": "",
+        "location": "",
+        "date": "",
+        "gear": ""
+    },
+
+    "eldorado_2025": {
+        "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
+        "count": 2,
+        "preview_img_idx": 0,
+        "title": "Eldorado Canyon",
+        "description": "",
+        "location": "",
+        "date": "",
+        "gear": ""
+    },
+
+    "pikes_peak_2025": {
+        "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
+        "count": 2,
+        "preview_img_idx": 0,
+        "title": "Pikes Peak 2025",
+        "description": "",
+        "location": "",
+        "date": "",
+        "gear": ""
+    },
+
+    "garden_of_the_gods_2025": {
+        "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
+        "count": 2,
+        "preview_img_idx": 0,
+        "title": "Garden of the gods 2025",
+        "description": "",
+        "location": "",
+        "date": "",
+        "gear": ""
+    },
+
+    "red_rock_2025": {
+        "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
+        "count": 2,
+        "preview_img_idx": 0,
+        "title": "Red Rock Ampitheater",
+        "description": "",
+        "location": "",
+        "date": "",
+        "gear": ""
+    },
+
+    "rmnp_2025": {
+        "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
+        "count": 2,
+        "preview_img_idx": 0,
+        "title": "Rocky Mountain National Park 2025",
+        "description": "",
+        "location": "",
+        "date": "",
+        "gear": ""
+    },
+
+    "anne_trail_2025": {
+        "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
+        "count": 2,
+        "preview_img_idx": 0,
+        "title": "Anne U. White Trail",
+        "description": "",
+        "location": "",
+        "date": "",
+        "gear": ""
     }
 }
