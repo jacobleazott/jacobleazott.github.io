@@ -1,3 +1,4 @@
+/* ========================= Home Text Content ========================= */
 #home_content {
     display: flex;
     flex-direction: column;
@@ -50,7 +51,6 @@
     50% { opacity: 0; }
 }
 
-
 /* ========================= Social Footer ========================= */
 .social-footer {
     position: fixed;
@@ -71,7 +71,6 @@
 }
 
 .home-sci a {
-    position: relative;
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -83,10 +82,9 @@
     font-size: 20px;
     color: var(--primary-accent-color);
     text-decoration: none;
-    z-index: 1;
-    overflow: hidden;
+    z-index: 100;
     transition: .5s;
-    opacity: 0; /* start hidden */
+    opacity: 0;
     animation-name: fadeSlideUp;
     animation-duration: 0.5s;
     animation-fill-mode: forwards;
@@ -133,15 +131,5 @@
     100% {
         opacity: 1;
         transform: translateY(0);
-    }
-}
-
-/* ========================= Keyframes ========================= */
-@keyframes showRight {
-    0% {
-      width: 100%;
-    }
-    100% {
-      width: 0;
     }
 }
