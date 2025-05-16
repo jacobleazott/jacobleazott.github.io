@@ -8,10 +8,15 @@ const routes = {
         onEnter: () => {
             addSocialFooter();
             startTypingEffect();
+            splashScreen();
+            window.addEventListener('resize', resizeSplashImages);
+
         },
         onExit: () => {
             removeSocialFooter();
             stopTypingEffect();
+            splashScreen();
+            window.removeEventListener('resize', resizeSplashImages);
         }
     },
     'pages/projects.html': {
@@ -112,7 +117,6 @@ async function handleRoute() {
         await route.onEnter(params);
     }
 }
-
 
 function loadPage(page, pushState = true) {
     return new Promise((resolve) => {
@@ -459,4 +463,127 @@ function selectJob(newIndex) {
 
 function onResize() {
     updatePanelsHeightAndVisibility(currentIndex);
+}
+
+// const IMAGE_POOL = [ "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-26.jpg",
+//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-25.jpg",
+//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-24.jpg",
+//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-23.jpg",
+//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-22.jpg",
+//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-21.jpg",
+//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-20.jpg",
+//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-19.jpg",
+//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-18.jpg",
+//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-17.jpg",
+//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-16.jpg",
+//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-15.jpg",
+//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-14.jpg",
+//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-13.jpg",
+//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-12.jpg",
+//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-11.jpg",
+//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-10.jpg",
+//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-9.jpg",
+//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-8.jpg",
+//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-7.jpg",
+//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-6.jpg",
+//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-5.jpg",
+//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-4.jpg",
+//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-3.jpg",
+//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-2.jpg",
+//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024.jpg",
+//  ];
+
+/* ========================== Home Splash ============================*/
+function resizeSplashImages() {
+    const MIN_COLS = 3;
+    const MAX_COLS = 9;
+    const MIN_W    = 360;   // at width≤360px, show 3 columns
+    const MAX_W    = 1440;  // at width≥1440px, show 9 columns
+  
+    const w = window.innerWidth;
+    // linear interpolate and round
+    const t = Math.min(1, Math.max(0, (w - MIN_W) / (MAX_W - MIN_W)));
+    const visibleCols = Math.round(MIN_COLS + (MAX_COLS - MIN_COLS) * t);
+  
+    // compute size so that 'visibleCols' fit across the rotated container
+    const size = (w * Math.SQRT2) / visibleCols;
+    document.documentElement.style.setProperty('--square-size', `${size}px`);
+  }
+  
+function splashScreen() {
+    const COLUMN_COUNT    = 6;
+    const BASE_SPEED      = 10;
+    const SPEED_VARIATION = 0;
+
+    resizeSplashImages();
+
+    requestAnimationFrame(() => {
+        const cols   = Array.from(document.querySelectorAll('.column'));
+        const center = (cols.length - 1) / 2;
+
+        const order = [...cols.keys()].sort((a, b) =>
+            Math.abs(b - center) - Math.abs(a - center)
+        );
+
+        order.forEach((idx, step) => {
+            const col = cols[idx];
+            if (col.dataset.inited) return;
+            col.dataset.inited = "1";
+            const inner = col.querySelector('.column-inner');
+        
+            // — wrap any loose <img> in .diamond …
+            Array.from(inner.querySelectorAll('img')).forEach(img => {
+                if (!img.parentElement.classList.contains('diamond')) {
+                    const wrap = document.createElement('div');
+                    wrap.className = 'diamond';
+                    img.parentNode.insertBefore(wrap, img);
+                    wrap.appendChild(img);
+                }
+            });
+        
+            // — fill up to COLUMN_COUNT (as before) …
+            const originals = Array.from(inner.querySelectorAll('.diamond'));
+            while (inner.children.length < COLUMN_COUNT) {
+                for (let i = 0; i < originals.length && inner.children.length < COLUMN_COUNT; i++) {
+                    inner.appendChild(originals[i].cloneNode(true));
+                }
+            }
+        
+            // — duplicate into a true seamless loop —
+            Array.from(inner.children).forEach(el => inner.appendChild(el.cloneNode(true)));
+        
+            // — calculate the exact half-loop height including gaps —
+            const totalScrollHeight = inner.scrollHeight;
+            const oneLoopHeight     = totalScrollHeight / 2;
+            inner.style.setProperty('--scroll-distance', `${oneLoopHeight}px`);
+
+            // — fade-in timing (unchanged) —
+            const fromTop = idx % 2 === 0;
+            col.classList.add(fromTop
+                ? 'slide-in-top-right'
+                : 'slide-in-bottom-left');
+            col.style.animationDelay = `${Math.floor(step / 2) * 0.4}s`;
+
+            // — choose duration & animation name —
+            const rand     = (Math.random() * SPEED_VARIATION) - (SPEED_VARIATION / 2);
+            const duration = Math.max(1, BASE_SPEED + rand);
+
+            // — apply the single keyframe to both cases —
+            inner.style.animation       = `scroll-up-left ${duration}s linear infinite`;
+            inner.style.animationDelay  = `0s`;             // no half-loop hacks
+            inner.style.willChange      = 'transform';
+            inner.style.transformOrigin = 'top center';
+
+            // === here’s the change: use reverse for “down-scroll” ===
+            if (fromTop) {
+              inner.style.animationDirection = 'reverse';
+            } else {
+              inner.style.animationDirection = 'normal';
+            }
+
+            // — always start from 0 so there’s no blank gap —
+            inner.style.transform = 'translateY(0)';
+
+        });        
+    });
 }
