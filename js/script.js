@@ -465,34 +465,6 @@ function onResize() {
     updatePanelsHeightAndVisibility(currentIndex);
 }
 
-// const IMAGE_POOL = [ "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-26.jpg",
-//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-25.jpg",
-//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-24.jpg",
-//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-23.jpg",
-//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-22.jpg",
-//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-21.jpg",
-//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-20.jpg",
-//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-19.jpg",
-//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-18.jpg",
-//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-17.jpg",
-//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-16.jpg",
-//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-15.jpg",
-//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-14.jpg",
-//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-13.jpg",
-//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-12.jpg",
-//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-11.jpg",
-//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-10.jpg",
-//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-9.jpg",
-//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-8.jpg",
-//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-7.jpg",
-//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-6.jpg",
-//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-5.jpg",
-//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-4.jpg",
-//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-3.jpg",
-//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024-2.jpg",
-//                     "https://res.cloudinary.com/dmfwvh2ir/image/upload/v1744403251/tucson-2024.jpg",
-//  ];
-
 /* ========================== Home Splash ============================*/
 function resizeSplashImages() {
     const MIN_COLS = 3;
@@ -509,81 +481,48 @@ function resizeSplashImages() {
     const size = (w * Math.SQRT2) / visibleCols;
     document.documentElement.style.setProperty('--square-size', `${size}px`);
   }
-  
-function splashScreen() {
-    const COLUMN_COUNT    = 6;
-    const BASE_SPEED      = 10;
-    const SPEED_VARIATION = 0;
 
+function splashScreen () {
+    const BASE_SPEED = 10;
+    const COLUMN_COUNT_NEEDED = 8;
     resizeSplashImages();
+    const columns = document.querySelectorAll(".column");
 
-    requestAnimationFrame(() => {
-        const cols   = Array.from(document.querySelectorAll('.column'));
-        const center = (cols.length - 1) / 2;
+    columns.forEach((column, colIndex) => {
+        const inner = column.querySelector(".column-inner");
+        let diamonds = inner.querySelectorAll(".diamond");
 
-        const order = [...cols.keys()].sort((a, b) =>
-            Math.abs(b - center) - Math.abs(a - center)
-        );
+        const elementHeight = (parseFloat(getComputedStyle(inner).gap) + 
+            (diamonds[0].getBoundingClientRect().height / Math.sqrt(2)))
+        const scrollDistance = diamonds.length * elementHeight;
 
-        order.forEach((idx, step) => {
-            const col = cols[idx];
-            if (col.dataset.inited) return;
-            col.dataset.inited = "1";
-            const inner = col.querySelector('.column-inner');
+        const diamondsArr = Array.from(diamonds);
+        while (diamonds.length < COLUMN_COUNT_NEEDED + diamondsArr.length) {
+            diamondsArr.forEach(diamond => {
+            const clone = diamond.cloneNode(true);
+            inner.appendChild(clone);
+            })
+            diamonds = inner.querySelectorAll(".diamond");
+        };
+
+        let offsetDistance = 0;
+        if (colIndex % 2 === 0) {
+            offsetDistance = -1 * (inner.querySelectorAll(".diamond").length - COLUMN_COUNT_NEEDED / 2) * elementHeight;
+        } else {
+            offsetDistance = -1 * (COLUMN_COUNT_NEEDED * elementHeight) / ((COLUMN_COUNT_NEEDED - 1) / 2);
+        }
         
-            // — wrap any loose <img> in .diamond …
-            Array.from(inner.querySelectorAll('img')).forEach(img => {
-                if (!img.parentElement.classList.contains('diamond')) {
-                    const wrap = document.createElement('div');
-                    wrap.className = 'diamond';
-                    img.parentNode.insertBefore(wrap, img);
-                    wrap.appendChild(img);
-                }
-            });
+        inner.style.setProperty('--splash-offset', `${offsetDistance}px`);
+        inner.style.setProperty('transform', `translateY(${offsetDistance}px)`);
         
-            // — fill up to COLUMN_COUNT (as before) …
-            const originals = Array.from(inner.querySelectorAll('.diamond'));
-            while (inner.children.length < COLUMN_COUNT) {
-                for (let i = 0; i < originals.length && inner.children.length < COLUMN_COUNT; i++) {
-                    inner.appendChild(originals[i].cloneNode(true));
-                }
-            }
+        inner.style.setProperty('--scroll-distance', `${scrollDistance}px`);
+        column.classList.add(colIndex % 2 === 0 ? "slide-in-top-right" : "slide-in-bottom-left");
+        const center = (columns.length - 1) / 2;
+        const delay = (center - Math.abs(colIndex - center)) * 0.35;
+        column.style.animationDelay = `${delay}s`;
         
-            // — duplicate into a true seamless loop —
-            Array.from(inner.children).forEach(el => inner.appendChild(el.cloneNode(true)));
-        
-            // — calculate the exact half-loop height including gaps —
-            const totalScrollHeight = inner.scrollHeight;
-            const oneLoopHeight     = totalScrollHeight / 2;
-            inner.style.setProperty('--scroll-distance', `${oneLoopHeight}px`);
-
-            // — fade-in timing (unchanged) —
-            const fromTop = idx % 2 === 0;
-            col.classList.add(fromTop
-                ? 'slide-in-top-right'
-                : 'slide-in-bottom-left');
-            col.style.animationDelay = `${Math.floor(step / 2) * 0.4}s`;
-
-            // — choose duration & animation name —
-            const rand     = (Math.random() * SPEED_VARIATION) - (SPEED_VARIATION / 2);
-            const duration = Math.max(1, BASE_SPEED + rand);
-
-            // — apply the single keyframe to both cases —
-            inner.style.animation       = `scroll-up-left ${duration}s linear infinite`;
-            inner.style.animationDelay  = `0s`;             // no half-loop hacks
-            inner.style.willChange      = 'transform';
-            inner.style.transformOrigin = 'top center';
-
-            // === here’s the change: use reverse for “down-scroll” ===
-            if (fromTop) {
-              inner.style.animationDirection = 'reverse';
-            } else {
-              inner.style.animationDirection = 'normal';
-            }
-
-            // — always start from 0 so there’s no blank gap —
-            inner.style.transform = 'translateY(0)';
-
-        });        
+        const adjustedSpeed = BASE_SPEED * (1 + (Math.random() * 0.4 - 0.2)); // +- 20%    
+        const scrollType = colIndex % 2 === 0 ? "scroll-top-down" : "scroll-bottom-up";
+        inner.style.animation = `${scrollType} ${scrollDistance / adjustedSpeed}s linear infinite`;
     });
 }
