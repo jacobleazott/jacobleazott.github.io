@@ -3,73 +3,108 @@ window.addEventListener('DOMContentLoaded', handleRoute);
 window.addEventListener('hashchange',       handleRoute);
 
 /*========================== Page Loading And Routing ============================*/
+const routes = {
+    'pages/home.html': {
+        onEnter: () => {
+            addSocialFooter();
+            startTypingEffect();
+        },
+        onExit: () => {
+            removeSocialFooter();
+            stopTypingEffect();
+        }
+    },
+    'pages/projects.html': {
+        onEnter: () => {
+            window.loadProjectCards();
+            window.attachModalHandlers();
+        },
+        onExit: () => { window.detachModalHandlers(); }
+    },
+    'project-:id': {
+        redirectTo: 'pages/projects.html',
+        onEnter: async (params) => {
+            await window.loadProjectCards();
+            window.attachModalHandlers();
+            document.addEventListener('keydown', attachModalHandlers);
+            window.openProject(params.id);
+        },
+        onExit: () => { window.detachModalHandlers(); }
+    },
+    'pages/photography.html': {
+        onEnter: loadGalleryGroups,
+        onExit: null
+    },
+    'gallery-:tag': {
+        redirectTo: 'pages/photography.html',
+        onEnter: async (params) => {
+            await loadGalleryGroups();
+            const cfg = galleryData[params.tag] || {};
+            showGallery(params.tag, generateImageUrls(cfg.base, cfg.count));
+        },
+        onExit: null,
+    },
+    'pages/about.html': {
+        onEnter: () => {
+            window.addEventListener('resize', onResize);
+            initExperienceSection();
+        },
+        onExit: () => {
+            window.removeEventListener('resize', onResize);
+        }
+    }
+};
+
+function matchRoute(hash) {
+    for (const [pattern, config] of Object.entries(routes)) {
+        const keys = [];
+        const regex = new RegExp('^' + pattern.replace(/:([^/]+)/g, (_, k) => {
+            keys.push(k);
+            return '([^/]+)';
+        }) + '$');
+        const match = hash.match(regex);
+        if (match) {
+            const params = keys.reduce((acc, key, i) => {
+                acc[key] = match[i + 1];
+                return acc;
+            }, {});
+            return { route: config, params, redirect: config.redirectTo || pattern };
+        }
+    }
+    return null;
+}
+
 let _routeId = 0;
+let currentRoute = null;
+let currentParams = {};
 
 async function handleRoute() {
     const myId = ++_routeId;
-    const raw = location.hash.slice(1);
+    const raw = location.hash.slice(1) || 'pages/home.html';
+
+    const match = matchRoute(raw);
+    if (!match) return;
+
+    const { route, params, redirect } = match;
+    if (currentRoute?.onExit) {
+        currentRoute.onExit(currentParams);
+    }
+
+    currentRoute = route;
+    currentParams = params;
+
     updateActiveNavLink(location.hash);
     updateLayout();
 
-    let pageToLoad = 'pages/home.html';
-    let postLoadHook = null;
-
-    // ------- Project Selector -------
-    if (raw === 'pages/projects.html') {
-        pageToLoad = 'pages/projects.html';
-        postLoadHook = async () => {
-            await window.loadProjectCards();
-            window.attachModalHandlers();
-        };
-
-    // ------- Project Preview -------
-    } else if (raw.startsWith('project-')) {
-        pageToLoad = 'pages/projects.html';
-        postLoadHook = async () => {
-            await window.loadProjectCards();
-            await window.attachModalHandlers();
-
-            const key = raw.replace('project-', '');
-            window.openProject(key);
-        };
-
-    // ------- Photography / Gallery -------
-    } else if (raw === 'pages/photography.html') {
-        pageToLoad = 'pages/photography.html';
-        postLoadHook = loadGalleryGroups;
-
-    } else if (raw.startsWith('gallery-')) {
-        const tag = raw.replace('gallery-', '');
-        pageToLoad = 'pages/photography.html';
-        postLoadHook = async () => {
-            if (!Object.keys(galleryData).length) {
-                await loadGalleryGroups();
-            }
-            const cfg = galleryData[tag] || {};
-            const imgs = generateImageUrls(cfg.base, cfg.count);
-            showGallery(tag, imgs, false);
-        };
-    
-    } else if (raw === 'pages/about.html') {
-        pageToLoad = 'pages/about.html';
-        postLoadHook = initExperienceSection;
-
-    // ------- Any other raw ending in .html -------
-    } else if (raw.endsWith('.html')) {
-        pageToLoad = raw;
-    }
-
-    // --- Load the page shell ---
-    await loadPage(pageToLoad, /*pushState=*/false);
+    await loadPage(redirect, false);
     if (myId !== _routeId) return;
 
-    await new Promise(resolve => setTimeout(resolve, 300));
-
-    // --- Run post-load logic ---
-    if (postLoadHook) {
-        await postLoadHook();
+    await new Promise(res => setTimeout(res, 300));
+    if (route.onEnter) {
+        await route.onEnter(params);
     }
 }
+
 
 function loadPage(page, pushState = true) {
     return new Promise((resolve) => {
@@ -152,6 +187,83 @@ function updateActiveNavLink(currentHash) {
             link.getAttribute('href') === matchHref
         );
     });
+}
+
+/* ========================== Footer ========================== */
+function addSocialFooter() {
+    if (document.querySelector('.social-footer')) return;
+
+    const footer = document.createElement('footer');
+    footer.className = 'social-footer';
+    footer.innerHTML = `
+        <div class="home-sci">
+            <a href="https://open.spotify.com/user/azm67mmfixu99v9idlpc6r9bs" class="spotify"><i class="bx bxl-spotify"></i></a>
+            <a href="https://github.com/jacobleazott"><i class='bx bxl-github'></i></a>
+            <a href="https://www.linkedin.com/in/jacob-leazott-a63910190/"><i class='bx bxl-linkedin'></i></a>
+        </div>
+    `;
+    document.body.appendChild(footer);
+
+    const links = footer.querySelectorAll('.home-sci a');
+    links.forEach((link, index) => {
+        link.style.animationDelay = `${index * 0.3}s`;
+    });
+}
+
+
+function removeSocialFooter() {
+    const footer = document.querySelector('.social-footer');
+    if (footer) footer.remove();
+}
+
+/*========================== Home Tying Text ============================*/
+let phraseIndex = 0;
+let charIndex = 0;
+let isTyping = true;
+
+function type() {
+    const prefix = "I'm ";
+    const phrases = ['Jacob Leazott', 'an Engineer.', 'a Maker.', 'a Designer.', 'a Photographer.', 'Always Learning.'];
+    const typeSpeed = 100;
+    const deleteSpeed = 60;
+    const holdTime = 1500;
+    
+    const cursor = document.getElementById('cursor');
+    if (!cursor) return;
+
+    let fullPhrase = prefix + phrases[phraseIndex];
+    document.getElementById('typed-text').textContent = fullPhrase.substring(0, charIndex);
+    cursor.classList.add('typing');
+
+    if (isTyping) {
+        if (charIndex < fullPhrase.length) {
+            charIndex++;
+            setTimeout(type, typeSpeed);
+        } else {
+            // Done typing, hold and then delete
+            cursor.classList.remove('typing');
+            isTyping = false;
+            setTimeout(type, holdTime);
+        }
+    } else { // Deleting
+        if (charIndex > prefix.length || (phraseIndex === phrases.length - 1 && charIndex > 0)) {
+            charIndex--;
+        } else {
+            isTyping = true;
+            phraseIndex = (phraseIndex + 1) % phrases.length;
+        }
+        setTimeout(type, deleteSpeed);
+    }
+}
+
+function startTypingEffect() {
+    setTimeout(type, 1000);
+}
+
+function stopTypingEffect() {
+    phraseIndex = 0;
+    charIndex = 0;
+    isTyping = true;
 }
 
 /*========================== Photo Gallery ============================*/
@@ -337,17 +449,6 @@ function selectJob(newIndex) {
     currentIndex = newIndex;
 }
 
-function onHashChange() {
-    if (window.location.hash === '#pages/about.html') {
-        window.addEventListener('resize', onResize);
-    } else {
-        window.removeEventListener('resize', onResize);
-    }
-}
-
 function onResize() {
     updatePanelsHeightAndVisibility(currentIndex);
 }
-
-window.addEventListener('hashchange', onHashChange);
-onHashChange();

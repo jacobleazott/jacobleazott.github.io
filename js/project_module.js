@@ -129,26 +129,44 @@ function navProject(dir) {
 }
 
 /*========================== Project Handlers ============================*/
-function attachModalHandlers() {
-    document.addEventListener('keydown', e => {
-        const overlay = document.getElementById('project-modal');
-        if (!overlay || !overlay.classList.contains('flex')) return;
-        if (e.key === 'Escape')      closeProject();
-        if (e.key === 'ArrowRight')  navProject('next');
-        if (e.key === 'ArrowLeft')   navProject('prev');
-    });
-
+function onModalKeydown(e) {
     const overlay = document.getElementById('project-modal');
-    overlay.querySelector('.modal-close').onclick    = closeProject;
-    overlay.querySelector('.modal-expand').onclick   = expandProject;
-    overlay.querySelector('.modal-nav.prev').onclick = () => navProject('prev');
-    overlay.querySelector('.modal-nav.next').onclick = () => navProject('next');
+    if (!overlay || !overlay.classList.contains('flex')) return;
+
+    if (e.key === 'Escape')      closeProject();
+    if (e.key === 'ArrowRight')  navProject('next');
+    if (e.key === 'ArrowLeft')   navProject('prev');
+}
+
+function attachModalHandlers() {
+    const overlay = document.getElementById('project-modal');
+    if (!overlay) return;
+
+    // Click handlers
+    overlay.querySelector('.modal-close')?.addEventListener('click', closeProject);
+    overlay.querySelector('.modal-expand')?.addEventListener('click', expandProject);
+    overlay.querySelector('.modal-nav.prev')?.addEventListener('click', () => navProject('prev'));
+    overlay.querySelector('.modal-nav.next')?.addEventListener('click', () => navProject('next'));
     overlay.addEventListener('click', e => {
         if (e.target === overlay) closeProject();
     });
+
+    // Global keydown handler
+    document.addEventListener('keydown', onModalKeydown);
+}
+
+function detachModalHandlers() {
+    document.removeEventListener('keydown', onModalKeydown);
+
+    const overlay = document.getElementById('project-modal');
+    if (!overlay) return;
+
+    overlay.querySelector('.modal-close')?.removeEventListener('click', closeProject);
+    overlay.querySelector('.modal-expand')?.removeEventListener('click', expandProject);
 }
 
 /*========================== Project Exports ============================*/
 window.loadProjectCards    = loadProjectCards;
 window.attachModalHandlers = attachModalHandlers;
+window.detachModalHandlers = detachModalHandlers;
 window.openProject         = openProject;
