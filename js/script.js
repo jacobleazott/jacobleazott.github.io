@@ -52,6 +52,14 @@ const routes = {
         onExit: () => {
             window.removeEventListener('resize', onResize);
         }
+    },
+    'pages/blogs.html': {
+        onEnter: null,
+        onExit: null
+    },
+    'pages/contact.html': {
+        onEnter: null,
+        onExit: null
     }
 };
 
@@ -227,7 +235,7 @@ function type() {
     const typeSpeed = 100;
     const deleteSpeed = 60;
     const holdTime = 1500;
-    
+
     const cursor = document.getElementById('cursor');
     if (!cursor) return;
 
