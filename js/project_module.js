@@ -25,7 +25,7 @@ async function loadProjectCards() {
                 <h3>${data.title}</h3>
                 <p>${data.description.replace(/\n/g, '<br>')}</p>
             </div>`;
-        card.addEventListener('click', () => openProject(key));
+        card.onclick = () => openProject(key);
         container.appendChild(card);
     });
 }
@@ -50,7 +50,7 @@ async function openProject(key) {
     void overlay.offsetWidth;
     overlay.classList.add('open');
 
-    history.pushState({ key }, '', `#project-${key}`);
+    navigateTo('project-' + key, { type: 'project', key }, handle_route = false);
 }
 
 function closeProject() {
@@ -68,7 +68,7 @@ function closeProject() {
         container.classList.remove('fullscreen');
     }, 300);
 
-    history.pushState({ view: 'list' }, '', '#pages/projects.html');
+    navigateTo('pages/projects.html', { type: 'page'}, handle_route = false);
 }
 
 /*========================== Project Navigation ============================*/
@@ -81,29 +81,43 @@ function expandProject() {
     btn.innerText = fullscreen ? '⤡' : '⤢';
 }
 
-function navProject(dir) {
+/**
+ * @param { 'next' | 'prev' | string } dirOrKey
+ *    If it's `"next"` or `"prev"`, you get the adjacent card.
+ *    If it's any other string, we'll treat it as a project key and jump there.
+ */
+function navProject(dirOrKey) {
     if (isAnimating) return;
     const overlay = document.getElementById('project-modal');
     if (!overlay || !overlay.classList.contains('flex')) return;
-
+    
     const contentWrap = overlay.querySelector('.content-wrapper');
-    const oldIndex = currentKeyIndex;
-    const newIndex = dir === 'next' ? oldIndex + 1 : oldIndex - 1;
+    
+    let newIndex, dir;
+    if (dirOrKey === 'next' || dirOrKey === 'prev') {
+        dir = dirOrKey;
+        newIndex = dir === 'next' ? currentKeyIndex + 1 : currentKeyIndex - 1;
+    } else {
+        newIndex = projectKeys.indexOf(dirOrKey);
+        if (newIndex < 0) return;
+        dir = newIndex > currentKeyIndex ? 'next' : 'prev';
+    }
+    
     if (newIndex < 0 || newIndex >= projectKeys.length) return;
-
+    
     isAnimating = true;
     const outClass = dir === 'next' ? 'slide-out-left' : 'slide-out-right';
     const inClass = dir === 'next' ? 'slide-in-right' : 'slide-in-left';
-
+    
     contentWrap.classList.add(outClass);
     contentWrap.addEventListener('animationend', function onOut(e) {
         if (!e.animationName.startsWith('slideOut')) return;
         contentWrap.removeEventListener('animationend', onOut);
         contentWrap.classList.remove(outClass);
-
+        
         contentWrap.classList.add('hidden');
         contentWrap.innerHTML = '';
-
+        
         currentKeyIndex = newIndex;
         fetch(projectData[projectKeys[newIndex]].html_to_load)
             .then(r => r.text())
@@ -119,13 +133,14 @@ function navProject(dir) {
                     contentWrap.classList.remove(inClass);
                     isAnimating = false;
                 }, { once: true });
-
+                
                 overlay.querySelector('.modal-nav.prev').classList.toggle('hidden', currentKeyIndex <= 0);
                 overlay.querySelector('.modal-nav.next').classList.toggle('hidden', currentKeyIndex >= projectKeys.length - 1);
-
-                history.pushState({ view: 'preview', key: projectKeys[newIndex] }, '', `#project-${projectKeys[newIndex]}`);
             });
     }, { once: true });
+    
+    navigateTo('project-' + projectKeys[newIndex], { type: 'project', id:projectKeys[newIndex] }, handle_route = false);
+    currentParams = { type: 'project', id:projectKeys[newIndex] };
 }
 
 /*========================== Project Handlers ============================*/
@@ -170,3 +185,6 @@ window.loadProjectCards    = loadProjectCards;
 window.attachModalHandlers = attachModalHandlers;
 window.detachModalHandlers = detachModalHandlers;
 window.openProject         = openProject;
+window.closeProject        = closeProject;
+window.navProject          = navProject;
+window.projectKeys         = projectKeys;

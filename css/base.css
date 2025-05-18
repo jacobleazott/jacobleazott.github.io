@@ -49,6 +49,7 @@ body::-webkit-scrollbar {
     opacity: 0.20;
     animation: pan 50s linear infinite;
     will-change: background-position;
+    pointer-events: none;
 }
     
 #background-gradient-overlay {
@@ -60,6 +61,7 @@ body::-webkit-scrollbar {
     height: 100%;
     opacity: 1;
     z-index: -1;
+    pointer-events: none;
 }
 
 /* ====================== Keyframes ====================== */

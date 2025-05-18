@@ -53,213 +53,224 @@
         "date": "",
         "gear": ""
     },
-
-    "elgin_park": {
+    
+    "unimplemented" : {
         "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
-        "count": 2,
+        "count": 1,
         "preview_img_idx": 0,
-        "title": "Elgin Park",
-        "description": " ",
+        "title": "Work In Progress",
+        "description": "Just a placeholder for my other galleries in json",
         "location": " ",
         "date": " ",
-        "gear": " "
-    },
+        "gear": " ", 
 
-    "valparaiso": {
-        "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
-        "count": 2,
-        "preview_img_idx": 0,
-        "title": "Valparaiso University",
-        "description": "",
-        "location": "",
-        "date": "",
-        "gear": ""
-    },
+        "elgin_park": {
+            "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
+            "count": 2,
+            "preview_img_idx": 0,
+            "title": "Elgin Park",
+            "description": " ",
+            "location": " ",
+            "date": " ",
+            "gear": " "
+        },
 
-    "las_vegas": {
-        "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
-        "count": 2,
-        "preview_img_idx": 0,
-        "title": "Las Vegas",
-        "description": "",
-        "location": "",
-        "date": "",
-        "gear": ""
-    },
+        "valparaiso": {
+            "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
+            "count": 2,
+            "preview_img_idx": 0,
+            "title": "Valparaiso University",
+            "description": "",
+            "location": "",
+            "date": "",
+            "gear": ""
+        },
 
-    "bermuda_cruise": {
-        "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
-        "count": 2,
-        "preview_img_idx": 0,
-        "title": "Bermuda Cruise",
-        "description": "",
-        "location": "",
-        "date": "",
-        "gear": ""
-    },
+        "las_vegas": {
+            "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
+            "count": 2,
+            "preview_img_idx": 0,
+            "title": "Las Vegas",
+            "description": "",
+            "location": "",
+            "date": "",
+            "gear": ""
+        },
 
-    "cruise_2021": {
-        "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
-        "count": 2,
-        "preview_img_idx": 0,
-        "title": "Caribbean Cruise 2021",
-        "description": "",
-        "location": "",
-        "date": "",
-        "gear": ""
-    },
+        "bermuda_cruise": {
+            "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
+            "count": 2,
+            "preview_img_idx": 0,
+            "title": "Bermuda Cruise",
+            "description": "",
+            "location": "",
+            "date": "",
+            "gear": ""
+        },
 
-    "rocky_mountain_2023": {
-        "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
-        "count": 2,
-        "preview_img_idx": 0,
-        "title": "Rocky Mountain National Park 2023",
-        "description": "",
-        "location": "",
-        "date": "",
-        "gear": ""
-    },
+        "cruise_2021": {
+            "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
+            "count": 2,
+            "preview_img_idx": 0,
+            "title": "Caribbean Cruise 2021",
+            "description": "",
+            "location": "",
+            "date": "",
+            "gear": ""
+        },
 
-    "lost_gultch": {
-        "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
-        "count": 2,
-        "preview_img_idx": 0,
-        "title": "Lost Gultch Overlook",
-        "description": "",
-        "location": "",
-        "date": "",
-        "gear": ""
-    },
+        "rocky_mountain_2023": {
+            "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
+            "count": 2,
+            "preview_img_idx": 0,
+            "title": "Rocky Mountain National Park 2023",
+            "description": "",
+            "location": "",
+            "date": "",
+            "gear": ""
+        },
 
-    "rocky_mountain_2023_2": {
-        "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
-        "count": 2,
-        "preview_img_idx": 0,
-        "title": "Rocky Mountain National Park 2023v2",
-        "description": "",
-        "location": "",
-        "date": "",
-        "gear": ""
-    },
+        "lost_gultch": {
+            "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
+            "count": 2,
+            "preview_img_idx": 0,
+            "title": "Lost Gultch Overlook",
+            "description": "",
+            "location": "",
+            "date": "",
+            "gear": ""
+        },
 
-    "pikes_peak_2023": {
-        "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
-        "count": 2,
-        "preview_img_idx": 0,
-        "title": "Pikes Peak 2023",
-        "description": "",
-        "location": "",
-        "date": "",
-        "gear": ""
-    },
+        "rocky_mountain_2023_2": {
+            "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
+            "count": 2,
+            "preview_img_idx": 0,
+            "title": "Rocky Mountain National Park 2023v2",
+            "description": "",
+            "location": "",
+            "date": "",
+            "gear": ""
+        },
 
-    "garden_of_the_gods_2023": {
-        "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
-        "count": 2,
-        "preview_img_idx": 0,
-        "title": "Garden of the gods 2023",
-        "description": "",
-        "location": "",
-        "date": "",
-        "gear": ""
-    },
+        "pikes_peak_2023": {
+            "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
+            "count": 2,
+            "preview_img_idx": 0,
+            "title": "Pikes Peak 2023",
+            "description": "",
+            "location": "",
+            "date": "",
+            "gear": ""
+        },
 
-    "winter_park_2023": {
-        "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
-        "count": 2,
-        "preview_img_idx": 0,
-        "title": "Winter Park",
-        "description": "",
-        "location": "",
-        "date": "",
-        "gear": ""
-    },
+        "garden_of_the_gods_2023": {
+            "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
+            "count": 2,
+            "preview_img_idx": 0,
+            "title": "Garden of the gods 2023",
+            "description": "",
+            "location": "",
+            "date": "",
+            "gear": ""
+        },
 
-    "lefthand_canyon_trail_2024": {
-        "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
-        "count": 2,
-        "preview_img_idx": 0,
-        "title": "Left Hand Canyon Trail",
-        "description": "",
-        "location": "",
-        "date": "",
-        "gear": ""
-    },
+        "winter_park_2023": {
+            "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
+            "count": 2,
+            "preview_img_idx": 0,
+            "title": "Winter Park",
+            "description": "",
+            "location": "",
+            "date": "",
+            "gear": ""
+        },
 
-    "christmas_2024": {
-        "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
-        "count": 2,
-        "preview_img_idx": 0,
-        "title": "Christmas 2024",
-        "description": "",
-        "location": "",
-        "date": "",
-        "gear": ""
-    },
+        "lefthand_canyon_trail_2024": {
+            "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
+            "count": 2,
+            "preview_img_idx": 0,
+            "title": "Left Hand Canyon Trail",
+            "description": "",
+            "location": "",
+            "date": "",
+            "gear": ""
+        },
 
-    "eldorado_2025": {
-        "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
-        "count": 2,
-        "preview_img_idx": 0,
-        "title": "Eldorado Canyon",
-        "description": "",
-        "location": "",
-        "date": "",
-        "gear": ""
-    },
+        "christmas_2024": {
+            "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
+            "count": 2,
+            "preview_img_idx": 0,
+            "title": "Christmas 2024",
+            "description": "",
+            "location": "",
+            "date": "",
+            "gear": ""
+        },
 
-    "pikes_peak_2025": {
-        "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
-        "count": 2,
-        "preview_img_idx": 0,
-        "title": "Pikes Peak 2025",
-        "description": "",
-        "location": "",
-        "date": "",
-        "gear": ""
-    },
+        "eldorado_2025": {
+            "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
+            "count": 2,
+            "preview_img_idx": 0,
+            "title": "Eldorado Canyon",
+            "description": "",
+            "location": "",
+            "date": "",
+            "gear": ""
+        },
 
-    "garden_of_the_gods_2025": {
-        "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
-        "count": 2,
-        "preview_img_idx": 0,
-        "title": "Garden of the gods 2025",
-        "description": "",
-        "location": "",
-        "date": "",
-        "gear": ""
-    },
+        "pikes_peak_2025": {
+            "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
+            "count": 2,
+            "preview_img_idx": 0,
+            "title": "Pikes Peak 2025",
+            "description": "",
+            "location": "",
+            "date": "",
+            "gear": ""
+        },
 
-    "red_rock_2025": {
-        "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
-        "count": 2,
-        "preview_img_idx": 0,
-        "title": "Red Rock Ampitheater",
-        "description": "",
-        "location": "",
-        "date": "",
-        "gear": ""
-    },
+        "garden_of_the_gods_2025": {
+            "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
+            "count": 2,
+            "preview_img_idx": 0,
+            "title": "Garden of the gods 2025",
+            "description": "",
+            "location": "",
+            "date": "",
+            "gear": ""
+        },
 
-    "rmnp_2025": {
-        "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
-        "count": 2,
-        "preview_img_idx": 0,
-        "title": "Rocky Mountain National Park 2025",
-        "description": "",
-        "location": "",
-        "date": "",
-        "gear": ""
-    },
+        "red_rock_2025": {
+            "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
+            "count": 2,
+            "preview_img_idx": 0,
+            "title": "Red Rock Ampitheater",
+            "description": "",
+            "location": "",
+            "date": "",
+            "gear": ""
+        },
 
-    "anne_trail_2025": {
-        "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
-        "count": 2,
-        "preview_img_idx": 0,
-        "title": "Anne U. White Trail",
-        "description": "",
-        "location": "",
-        "date": "",
-        "gear": ""
+        "rmnp_2025": {
+            "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
+            "count": 2,
+            "preview_img_idx": 0,
+            "title": "Rocky Mountain National Park 2025",
+            "description": "",
+            "location": "",
+            "date": "",
+            "gear": ""
+        },
+
+        "anne_trail_2025": {
+            "base": "https://res.cloudinary.com/dmfwvh2ir/image/upload/misc",
+            "count": 2,
+            "preview_img_idx": 0,
+            "title": "Anne U. White Trail",
+            "description": "",
+            "location": "",
+            "date": "",
+            "gear": ""
+        }
     }
 }

@@ -1,6 +1,6 @@
 /*========================== Startup ============================*/
 window.addEventListener('DOMContentLoaded', handleRoute);
-window.addEventListener('hashchange',       handleRoute);
+window.addEventListener('popstate',         handleRoute);
 
 /*========================== Page Loading And Routing ============================*/
 const routes = {
@@ -8,10 +8,14 @@ const routes = {
         onEnter: () => {
             addSocialFooter();
             startTypingEffect();
+            splashScreen();
+            window.addEventListener('resize', resizeSplashImages);
+
         },
         onExit: () => {
             removeSocialFooter();
             stopTypingEffect();
+            window.removeEventListener('resize', resizeSplashImages);
         }
     },
     'pages/projects.html': {
@@ -27,7 +31,7 @@ const routes = {
             await window.loadProjectCards();
             window.attachModalHandlers();
             document.addEventListener('keydown', attachModalHandlers);
-            window.openProject(params.id);
+            await window.openProject(params.id);
         },
         onExit: () => { window.detachModalHandlers(); }
     },
@@ -39,10 +43,9 @@ const routes = {
         redirectTo: 'pages/photography.html',
         onEnter: async (params) => {
             await loadGalleryGroups();
-            const cfg = galleryData[params.tag] || {};
-            showGallery(params.tag, generateImageUrls(cfg.base, cfg.count));
+            showGallery(params.tag);
         },
-        onExit: null,
+        onExit: null
     },
     'pages/about.html': {
         onEnter: () => {
@@ -63,6 +66,20 @@ const routes = {
     }
 };
 
+function navigateTo(hash, state = {}, handle_route = true) {
+    const newUrl = `#${hash}`;
+    const currentUrl = window.location.hash;
+
+    if (currentUrl === newUrl) {
+        history.replaceState(state, '', newUrl);
+    } else {
+        history.pushState(state, '', newUrl);
+    }
+    
+    if (handle_route) handleRoute();
+    currentRaw = hash;
+}
+
 function matchRoute(hash) {
     for (const [pattern, config] of Object.entries(routes)) {
         const keys = [];
@@ -82,8 +99,33 @@ function matchRoute(hash) {
     return null;
 }
 
+handleProjectNavigation = (raw, params) => {
+    // 1 - If going from one project to another
+    if (currentRaw?.startsWith('project-') && raw.startsWith('project-') && raw !== currentRaw) {
+        navProject(params.id);
+        currentRaw = raw;
+        currentParams = params;
+        return true;
+    }
+    // 2 -If going from projects list → single project
+    if (currentRaw === 'pages/projects.html' &&raw.startsWith('project-')) {
+        openProject(params.id);
+        currentParams = params;
+        return true;
+    }
+    // 3 - If closing a project back to the list
+    if (currentRaw?.startsWith('project-') && raw === 'pages/projects.html') {
+        closeProject();
+        currentParams = params;
+        return true;
+    }
+    
+    return false;
+}
+
 let _routeId = 0;
 let currentRoute = null;
+let currentRaw = null;
 let currentParams = {};
 
 async function handleRoute() {
@@ -94,6 +136,9 @@ async function handleRoute() {
     if (!match) return;
 
     const { route, params, redirect } = match;
+
+    if (handleProjectNavigation(raw, params)) return;
+
     if (currentRoute?.onExit) {
         currentRoute.onExit(currentParams);
     }
@@ -112,7 +157,6 @@ async function handleRoute() {
         await route.onEnter(params);
     }
 }
-
 
 function loadPage(page, pushState = true) {
     return new Promise((resolve) => {
@@ -146,6 +190,19 @@ function loadPage(page, pushState = true) {
         }, 300);
     });
 }
+
+// 1) Delegate all clicks on <a href="#…"> to your router:
+document.body.addEventListener('click', e => {
+    const link = e.target.closest('a[href^="#"]');
+    if (!link) return;
+
+    const rawHash = link.getAttribute('href').slice(1);
+    const routeMatch = matchRoute(rawHash);
+    if (!routeMatch) return;
+
+    e.preventDefault();
+    navigateTo(rawHash, {});
+});
 
 /*========================== Menu ============================*/
 const navLink = document.querySelectorAll('.nav_link');
@@ -291,14 +348,16 @@ async function loadGalleryGroups() {
         card.style.animationDelay = `${index * 0.1}s`;
         card.style.backgroundImage = `url(${images[cfg.preview_img_idx]})`;
         card.innerHTML = `<div class="overlay"><h2>${cfg.title}</h2></div>`;
-        card.onclick = () => location.hash = `gallery-${tag}`;
+        card.onclick = () => showGallery(tag);
         selector.appendChild(card);
     });
 
     return new Promise(requestAnimationFrame);
 }
 
-function showGallery(tag, images) {
+function showGallery(tag) {
+    const cfg = galleryData[tag] || {};
+    images = generateImageUrls(cfg.base, cfg.count);
     const selector         = document.getElementById('gallery-selector');
     const galleryContainer = document.getElementById('active-gallery-container');
     const galleryDiv       = document.getElementById('active-gallery');
@@ -323,6 +382,8 @@ function showGallery(tag, images) {
         img.style.animationDelay = `${i * 0.1}s`;
         galleryDiv.appendChild(img);
     });
+
+    navigateTo('gallery-' + tag, { type: 'gallery', tag }, handle_route=false);
 }
 
 function generateImageUrls(base, count) {
@@ -459,4 +520,73 @@ function selectJob(newIndex) {
 
 function onResize() {
     updatePanelsHeightAndVisibility(currentIndex);
+}
+
+/* ========================== Home Splash ============================*/
+function resizeSplashImages() {
+    const MIN_COLS = 3;
+    const MAX_COLS = 9;
+    const MIN_W    = 360;   // at width≤360px, show 3 columns
+    const MAX_W    = 1440;  // at width≥1440px, show 9 columns
+  
+    const w = window.innerWidth;
+    // linear interpolate and round
+    const t = Math.min(1, Math.max(0, (w - MIN_W) / (MAX_W - MIN_W)));
+    const visibleCols = Math.round(MIN_COLS + (MAX_COLS - MIN_COLS) * t);
+  
+    // compute size so that 'visibleCols' fit across the rotated container
+    const size = (w * Math.SQRT2) / visibleCols;
+    document.documentElement.style.setProperty('--square-size', `${size}px`);
+  }
+
+function splashScreen () {
+    const BASE_SPEED = 10;
+    const COLUMN_COUNT_NEEDED = 8;
+    resizeSplashImages();
+    const columns = document.querySelectorAll(".column");
+
+    columns.forEach((column, colIndex) => {
+        const inner = column.querySelector(".column-inner");
+        let diamonds = inner.querySelectorAll(".diamond");
+
+        // Shuffle the diamonds array to randomize their order
+        const diamondsArr = Array.from(diamonds);
+        diamondsArr.sort(() => Math.random() - 0.5);
+        inner.innerHTML = '';
+        diamondsArr.forEach(diamond => {
+            inner.appendChild(diamond);
+        });
+
+        const elementHeight = (parseFloat(getComputedStyle(inner).gap) + 
+            (diamonds[0].getBoundingClientRect().height / Math.sqrt(2)))
+        const scrollDistance = diamonds.length * elementHeight;
+
+        while (diamonds.length < COLUMN_COUNT_NEEDED + diamondsArr.length) {
+            diamondsArr.forEach(diamond => {
+            const clone = diamond.cloneNode(true);
+            inner.appendChild(clone);
+            })
+            diamonds = inner.querySelectorAll(".diamond");
+        };
+
+        let offsetDistance = 0;
+        if (colIndex % 2 === 0) {
+            offsetDistance = -1 * (inner.querySelectorAll(".diamond").length - COLUMN_COUNT_NEEDED / 2) * elementHeight;
+        } else {
+            offsetDistance = -1 * (COLUMN_COUNT_NEEDED * elementHeight) / ((COLUMN_COUNT_NEEDED - 1) / 2);
+        }
+        
+        inner.style.setProperty('--splash-offset', `${offsetDistance}px`);
+        inner.style.setProperty('transform', `translateY(${offsetDistance}px)`);
+        
+        inner.style.setProperty('--scroll-distance', `${scrollDistance}px`);
+        column.classList.add(colIndex % 2 === 0 ? "slide-in-top-right" : "slide-in-bottom-left");
+        const center = (columns.length - 1) / 2;
+        const delay = (center - Math.abs(colIndex - center)) * 0.35;
+        column.style.animationDelay = `${delay}s`;
+        
+        const adjustedSpeed = BASE_SPEED * (1 + (Math.random() * 0.4 - 0.2)); // +- 20%    
+        const scrollType = colIndex % 2 === 0 ? "scroll-top-down" : "scroll-bottom-up";
+        inner.style.animation = `${scrollType} ${scrollDistance / adjustedSpeed}s linear infinite`;
+    });
 }
