@@ -42,7 +42,6 @@ const routes = {
     'gallery-:tag': {
         redirectTo: 'pages/photography.html',
         onEnter: async (params) => {
-            console.log("Gallery on enter");
             await loadGalleryGroups();
             showGallery(params.tag);
         },
@@ -68,7 +67,6 @@ const routes = {
 };
 
 function navigateTo(hash, state = {}, handle_route = true) {
-    console.log("NAVIGATE TO", hash, state, handle_route);
     const newUrl = `#${hash}`;
     const currentUrl = window.location.hash;
 

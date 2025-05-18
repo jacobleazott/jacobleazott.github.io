@@ -25,9 +25,7 @@ async function loadProjectCards() {
                 <h3>${data.title}</h3>
                 <p>${data.description.replace(/\n/g, '<br>')}</p>
             </div>`;
-        // card.onclick = () => location.hash = `project-${key}`;
         card.onclick = () => openProject(key);
-        // card.addEventListener('click', () => openProject(key));
         container.appendChild(card);
     });
 }
