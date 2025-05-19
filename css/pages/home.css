@@ -73,95 +73,6 @@
     50% { opacity: 0; }
 }
 
-/* ========================= Social Footer ========================= */
-.social-footer {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    z-index: 10;
-    transform: translateZ(0);
-    padding: 15px;
-    background: rgba(0, 0, 0, 0.6); /* or 0.2 for slightly stronger white */
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px); /* Safari support */
-    border-radius: 20px;
-}
-
-.home-sci {
-    width: 100%;
-    display: flex;
-    gap: 20px;
-    justify-content: space-between;
-}
-
-.home-sci a {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    width: 40px;
-    height: 40px;
-    background: transparent;
-    border: 2px solid var(--primary-accent-color);
-    border-radius: 50%;
-    font-size: 20px;
-    color: var(--primary-accent-color);
-    text-decoration: none;
-    overflow: hidden;
-    z-index: 100;
-    transition: .5s;
-    opacity: 0;
-    animation-name: fadeSlideUp;
-    animation-duration: 0.5s;
-    animation-fill-mode: forwards;
-    animation-timing-function: ease-out;
-}
-
-.home-sci a.spotify {
-    color: #1DB954;
-    border-color: #1DB954;
-}
-
-.home-sci a.spotify::before {
-    background: #1DB954;
-}
-
-.home-sci a:hover {
-    color: var(--dark-gray-color);
-}
-
-.home-sci a::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 100%;
-    background: var(--primary-accent-color);
-    border-radius: 50%;
-    z-index: -1;
-    transition: .5s;
-    color: var(--dark-gray-color);
-}
-
-.home-sci a:hover::before {
-    width: 100%;
-    color: var(--dark-gray-color);
-}
-
-@keyframes fadeSlideUp {
-    0% {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 /* ========================= Splash Screen ========================= */
 .splash {
     position: fixed;
@@ -175,6 +86,7 @@
     justify-content: center;
     z-index: -5;
     user-select: none;
+    filter: brightness(80%);
 }
 
 .splash-content {

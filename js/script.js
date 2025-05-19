@@ -6,14 +6,12 @@ window.addEventListener('popstate',         handleRoute);
 const routes = {
     'pages/home.html': {
         onEnter: () => {
-            addSocialFooter();
             startTypingEffect();
             splashScreen();
             window.addEventListener('resize', resizeSplashImages);
 
         },
         onExit: () => {
-            removeSocialFooter();
             stopTypingEffect();
             window.removeEventListener('resize', resizeSplashImages);
         }
@@ -147,7 +145,6 @@ async function handleRoute() {
     currentParams = params;
 
     updateActiveNavLink(location.hash);
-    updateLayout();
 
     await loadPage(redirect, false);
     if (myId !== _routeId) return;
@@ -191,7 +188,7 @@ function loadPage(page, pushState = true) {
     });
 }
 
-// 1) Delegate all clicks on <a href="#…"> to your router:
+// Delegate all clicks on <a href="#…"> to your router:
 document.body.addEventListener('click', e => {
     const link = e.target.closest('a[href^="#"]');
     if (!link) return;
@@ -205,32 +202,36 @@ document.body.addEventListener('click', e => {
 });
 
 /*========================== Menu ============================*/
-const navLink = document.querySelectorAll('.nav_link');
-const hamburger = document.getElementById('hamburger');
-const navBar = document.querySelector('.nav_bar');
+const hamburger    = document.getElementById('hamburger');
+const navBar       = document.querySelector('.nav_bar');
+const overlay      = document.getElementById('nav-bar-overlay');
+const clickCatcher = document.getElementById('nav-click-catcher');
 
-function updateLayout() {
-    if (window.innerWidth <= 1000) {
-        navBar.classList.remove('active');
-        hamburger.classList.remove('open');
-    } else {
-        navBar.classList.remove('active');
-        hamburger.classList.remove('open');
-    }
+function closeMenu() {
+  navBar.classList.remove('active');
+  hamburger.classList.remove('open');
+  overlay.classList.remove('menu-open');
+  clickCatcher.classList.remove('active');
 }
-
-window.addEventListener('resize', updateLayout);
 
 hamburger.addEventListener('click', () => {
-    navBar.classList.toggle('active');
-    hamburger.classList.toggle('open');
+  const isOpen = navBar.classList.toggle('active');
+  hamburger.classList.toggle('open', isOpen);
+  overlay.classList.toggle('menu-open', isOpen);
+  clickCatcher.classList.toggle('active', isOpen);
 });
 
-function linkAction() {
-    navLink.forEach(n => n.classList.remove('active'));
-    this.classList.add('active');
-}
-navLink.forEach(n => n.addEventListener('click', linkAction));
+// close when clicking outside
+clickCatcher.addEventListener('click', e => {
+  e.stopPropagation();
+  closeMenu();
+});
+
+// close when clicking any nav link
+document.querySelectorAll('.nav_bar a').forEach(a => {
+  a.addEventListener('click', closeMenu);
+});
+
 
 function updateActiveNavLink(currentHash) {
     // Ensure leading '#' and default to home if empty
@@ -252,33 +253,6 @@ function updateActiveNavLink(currentHash) {
             link.getAttribute('href') === matchHref
         );
     });
-}
-
-/* ========================== Footer ========================== */
-function addSocialFooter() {
-    if (document.querySelector('.social-footer')) return;
-
-    const footer = document.createElement('footer');
-    footer.className = 'social-footer';
-    footer.innerHTML = `
-        <div class="home-sci">
-            <a href="https://open.spotify.com/user/azm67mmfixu99v9idlpc6r9bs" class="spotify"><i class="bx bxl-spotify"></i></a>
-            <a href="https://github.com/jacobleazott"><i class='bx bxl-github'></i></a>
-            <a href="https://www.linkedin.com/in/jacob-leazott-a63910190/"><i class='bx bxl-linkedin'></i></a>
-        </div>
-    `;
-    document.body.appendChild(footer);
-
-    const links = footer.querySelectorAll('.home-sci a');
-    links.forEach((link, index) => {
-        link.style.animationDelay = `${index * 0.3}s`;
-    });
-}
-
-
-function removeSocialFooter() {
-    const footer = document.querySelector('.social-footer');
-    if (footer) footer.remove();
 }
 
 /*========================== Home Tying Text ============================*/
