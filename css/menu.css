@@ -99,7 +99,7 @@
 }
 
 #nav-bar-overlay.menu-open {
-    height: calc(var(--header-height) + 290px);
+    height: calc(var(--header-height) + 200px);
     background: rgba(0,0,0,0.5);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);

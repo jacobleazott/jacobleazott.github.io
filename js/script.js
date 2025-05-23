@@ -446,7 +446,10 @@ async function initExperienceSection() {
     panelsContainer.style.height = `${panelsContainer.scrollHeight}px`;
     
     expContainer.getBoundingClientRect(); // force reflow
-    expContainer.classList.add('loaded');
+    updatePanelsHeightAndVisibility(0);
+    requestAnimationFrame(() => {
+        expContainer.classList.add('loaded');
+    });
 }
 
 function moveHighlightToIndex(index) {
@@ -461,6 +464,9 @@ function moveHighlightToIndex(index) {
 
 function selectJob(newIndex) {
     if (newIndex === currentIndex) return;
+
+    const container = document.querySelector('.experience-container');
+    container.style.minHeight = '0'; // Remove the fixed height on interaction
     
     const tabList = document.querySelector('.tab-list');
     const btns = tabList.querySelectorAll('button');
