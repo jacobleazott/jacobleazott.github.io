@@ -65,21 +65,12 @@ function closeProject() {
 
     setTimeout(() => {
         overlay.classList.remove('closing', 'flex');
-        container.classList.remove('fullscreen');
     }, 300);
 
     navigateTo('pages/projects.html', { type: 'page'}, handle_route = false);
 }
 
 /*========================== Project Navigation ============================*/
-function expandProject() {
-    const overlay   = document.getElementById('project-modal');
-    const container = overlay.querySelector('.modal-container');
-    const btn       = overlay.querySelector('.modal-expand');
-
-    const fullscreen = container.classList.toggle('fullscreen');
-    btn.innerText = fullscreen ? '⤡' : '⤢';
-}
 
 /**
  * @param { 'next' | 'prev' | string } dirOrKey
@@ -159,7 +150,6 @@ function attachModalHandlers() {
 
     // Click handlers
     overlay.querySelector('.modal-close')?.addEventListener('click', closeProject);
-    overlay.querySelector('.modal-expand')?.addEventListener('click', expandProject);
     overlay.querySelector('.modal-nav.prev')?.addEventListener('click', () => navProject('prev'));
     overlay.querySelector('.modal-nav.next')?.addEventListener('click', () => navProject('next'));
     overlay.addEventListener('click', e => {
@@ -177,7 +167,6 @@ function detachModalHandlers() {
     if (!overlay) return;
 
     overlay.querySelector('.modal-close')?.removeEventListener('click', closeProject);
-    overlay.querySelector('.modal-expand')?.removeEventListener('click', expandProject);
 }
 
 /*========================== Project Exports ============================*/
