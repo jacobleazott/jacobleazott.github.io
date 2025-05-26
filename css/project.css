@@ -457,6 +457,7 @@ body.disable-scroll {
 }
 
 .project-info {
+    margin-left: auto;
     flex: 0 0 250px;
     width: 800px;
     background: linear-gradient(135deg, rgba(var(--light-gray-color-rgb), 0.5), rgba(50, 50, 50, 0.5));
@@ -481,6 +482,43 @@ body.disable-scroll {
     font-weight: bold;
 }
 
-.description-container {
+.description-container,
+.key-features-container {
     margin: 0 20px;
+}
+
+.key-features-container ul{
+    list-style-type: disc inside;
+    font-size: 1.2rem;
+    margin-left: 20px;
+    line-height: 1.4;
+}
+
+.key-features-container hr {
+    height: 3px;
+    background: linear-gradient(to right, rgba(var(--primary-accent-color-rgb), 1), rgba(var(--light-gray-color-rgb), 0));
+    border: none;
+}
+
+.screenshot-container {
+    margin-left: auto;
+}
+
+.gif-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    width: 100vw;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 20px;
+}
+
+.gif-grid img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    image-rendering: pixelated;
+    border-radius: 20px;
+    box-shadow: 10px 10px 20px rgba(var(--primary-accent-color-rgb), 0.6);
 }
