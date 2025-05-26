@@ -50,6 +50,8 @@ async function openProject(key) {
     void overlay.offsetWidth;
     overlay.classList.add('open');
 
+    updateScrollGradients();
+
     navigateTo('project-' + key, { type: 'project', key }, handle_route = false);
 }
 
@@ -144,9 +146,21 @@ function onModalKeydown(e) {
     if (e.key === 'ArrowLeft')   navProject('prev');
 }
 
+function updateScrollGradients() {
+    const content = document.querySelector('.project-content');
+    const wrapper = content.querySelector('.content-wrapper');
+    if (!content || !wrapper) return;
+
+    const { scrollTop, scrollHeight, clientHeight } = wrapper;
+
+    content.classList.toggle('has-top-fade', scrollTop > 0);
+    content.classList.toggle('has-bottom-fade', scrollTop + clientHeight <= scrollHeight - 1);
+}
+
 function attachModalHandlers() {
     const overlay = document.getElementById('project-modal');
-    if (!overlay) return;
+    const wrapper = content.querySelector('.content-wrapper');
+    if (!overlay || !wrapper) return;
 
     // Click handlers
     overlay.querySelector('.modal-close')?.addEventListener('click', closeProject);
@@ -155,18 +169,23 @@ function attachModalHandlers() {
     overlay.addEventListener('click', e => {
         if (e.target === overlay) closeProject();
     });
-
-    // Global keydown handler
+    
     document.addEventListener('keydown', onModalKeydown);
+    wrapper.addEventListener('scroll', updateScrollGradients);
+    window.addEventListener('resize', updateScrollGradients);
+    updateScrollGradients();
 }
 
 function detachModalHandlers() {
     document.removeEventListener('keydown', onModalKeydown);
-
+    window.removeEventListener('resize', updateScrollGradients);
+    
     const overlay = document.getElementById('project-modal');
-    if (!overlay) return;
-
+    const wrapper = content.querySelector('.content-wrapper');
+    if (!overlay || !wrapper) return;
+    
     overlay.querySelector('.modal-close')?.removeEventListener('click', closeProject);
+    wrapper.removeEventListener('scroll', updateScrollGradients);
 }
 
 /*========================== Project Exports ============================*/
