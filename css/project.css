@@ -522,3 +522,37 @@ body.disable-scroll {
     border-radius: 20px;
     box-shadow: 10px 10px 20px rgba(var(--primary-accent-color-rgb), 0.6);
 }
+
+.tutorial-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-family: Arial, sans-serif;
+}
+
+.tutorial-container h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.tutorial-container p {
+    margin-bottom: 2rem;
+    line-height: 1.5;
+}
+
+.step {
+    margin-bottom: 3rem;
+}
+
+.step h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.step img {
+    display: block;
+    max-width: 100%;
+    margin: 0.5rem 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
