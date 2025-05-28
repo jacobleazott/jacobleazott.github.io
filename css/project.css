@@ -382,7 +382,6 @@ body.disable-scroll {
     filter: brightness(1.1);
 }
 
-/* Layout direction toggles */
 .rev {
     flex-direction: row-reverse;
 }
@@ -521,6 +520,7 @@ body.disable-scroll {
     image-rendering: pixelated;
     border-radius: 20px;
     box-shadow: 10px 10px 20px rgba(var(--primary-accent-color-rgb), 0.6);
+    will-change: transform;
 }
 
 .tutorial-container {
