@@ -504,7 +504,7 @@ body.disable-scroll {
     margin-left: auto;
 }
 
-.gif-grid {
+.img-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 30px;
@@ -514,7 +514,7 @@ body.disable-scroll {
     padding: 20px;
 }
 
-.gif-grid img {
+.img-grid img {
     width: 100%;
     aspect-ratio: 1 / 1;
     object-fit: cover;
