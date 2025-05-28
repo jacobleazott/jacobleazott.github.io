@@ -50,6 +50,8 @@ async function openProject(key) {
     void overlay.offsetWidth;
     overlay.classList.add('open');
 
+    updateScrollGradients();
+
     navigateTo('project-' + key, { type: 'project', key }, handle_route = false);
 }
 
@@ -65,21 +67,12 @@ function closeProject() {
 
     setTimeout(() => {
         overlay.classList.remove('closing', 'flex');
-        container.classList.remove('fullscreen');
     }, 300);
 
     navigateTo('pages/projects.html', { type: 'page'}, handle_route = false);
 }
 
 /*========================== Project Navigation ============================*/
-function expandProject() {
-    const overlay   = document.getElementById('project-modal');
-    const container = overlay.querySelector('.modal-container');
-    const btn       = overlay.querySelector('.modal-expand');
-
-    const fullscreen = container.classList.toggle('fullscreen');
-    btn.innerText = fullscreen ? '⤡' : '⤢';
-}
 
 /**
  * @param { 'next' | 'prev' | string } dirOrKey
@@ -153,31 +146,46 @@ function onModalKeydown(e) {
     if (e.key === 'ArrowLeft')   navProject('prev');
 }
 
+function updateScrollGradients() {
+    const content = document.querySelector('.project-content');
+    const wrapper = content.querySelector('.content-wrapper');
+    if (!content || !wrapper) return;
+
+    const { scrollTop, scrollHeight, clientHeight } = wrapper;
+
+    content.classList.toggle('has-top-fade', scrollTop > 0);
+    content.classList.toggle('has-bottom-fade', scrollTop + clientHeight <= scrollHeight - 1);
+}
+
 function attachModalHandlers() {
     const overlay = document.getElementById('project-modal');
-    if (!overlay) return;
+    const wrapper = content.querySelector('.content-wrapper');
+    if (!overlay || !wrapper) return;
 
     // Click handlers
     overlay.querySelector('.modal-close')?.addEventListener('click', closeProject);
-    overlay.querySelector('.modal-expand')?.addEventListener('click', expandProject);
     overlay.querySelector('.modal-nav.prev')?.addEventListener('click', () => navProject('prev'));
     overlay.querySelector('.modal-nav.next')?.addEventListener('click', () => navProject('next'));
     overlay.addEventListener('click', e => {
         if (e.target === overlay) closeProject();
     });
-
-    // Global keydown handler
+    
     document.addEventListener('keydown', onModalKeydown);
+    wrapper.addEventListener('scroll', updateScrollGradients);
+    window.addEventListener('resize', updateScrollGradients);
+    updateScrollGradients();
 }
 
 function detachModalHandlers() {
     document.removeEventListener('keydown', onModalKeydown);
-
+    window.removeEventListener('resize', updateScrollGradients);
+    
     const overlay = document.getElementById('project-modal');
-    if (!overlay) return;
-
+    const wrapper = content.querySelector('.content-wrapper');
+    if (!overlay || !wrapper) return;
+    
     overlay.querySelector('.modal-close')?.removeEventListener('click', closeProject);
-    overlay.querySelector('.modal-expand')?.removeEventListener('click', expandProject);
+    wrapper.removeEventListener('scroll', updateScrollGradients);
 }
 
 /*========================== Project Exports ============================*/

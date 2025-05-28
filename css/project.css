@@ -70,13 +70,39 @@
 
 /* ========================= Active Project ========================= */
 #project-content {
-    padding: 40px;
-    width:  80%;
+    width:  100%;
     height: 100%;
-    margin: 0 auto;
     color: var(--white-color);
     position: relative;
     overflow: hidden;
+}
+
+.project-content::before,
+.project-content::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 50px;
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.project-content.has-bottom-fade::after,
+.project-content.has-top-fade::before {
+    opacity: 1;
+}
+
+.project-content::before {
+    top: 0;
+    background: linear-gradient(to bottom, var(--dark-gray-color), transparent);
+}
+
+.project-content::after {
+    bottom: 0;
+    background: linear-gradient(to top, var(--dark-gray-color), transparent);
 }
 
 #project-modal {
@@ -104,12 +130,13 @@
     position: fixed;
     top: 50%;
     left: 50%;
-    width: 80%;
-    height: 80%;
+    width: 100%;
+    max-width: 1700px;
+    height: 95%;
     transform: translate(-50%, -50%) scale(0.8);
-    background: #111;
+    background: var(--dark-gray-color);
     border-radius: 12px;
-    padding: 40px 20px;
+    padding: 0 20px;
     box-shadow: 0 8px 24px rgba(0,0,0,0.7);
     opacity: 0;
     transition:
@@ -119,12 +146,6 @@
         height 0.3s ease;
     backface-visibility: hidden;
     will-change: transform, visibility;
-    overflow: hidden;
-}
-
-.modal-container.fullscreen {
-    width: 100% !important;
-    height: 100% !important;
 }
 
 .modal-overlay.open .modal-container {
@@ -143,8 +164,10 @@
     width: 100%;
     height: 100%;
     overflow-y: auto;
-    backface-visibility: hidden;
-    will-change: transform, opacity;
+    scrollbar-width: none;
+    padding-top: 20px;
+    padding-bottom: 50px;
+    scroll-behavior: smooth;
 }
 
 .content-wrapper.slide-out-left {
@@ -168,6 +191,7 @@
     right: 12px;
     display: flex;
     gap: 8px;
+    z-index: 10;
 }
 
 .modal-header button {
@@ -176,27 +200,65 @@
     font-size: 1.4rem;
     color: #fff;
     cursor: pointer;
+    border: none;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.15);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 
+        transform 0.3s ease,
+        background 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.modal-header button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.2);
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
 }
 
 .modal-nav {
     position: absolute;
     top: 50%;
-    transform: translateY(-50%);
-    font-size: 2rem;
-    color: #fff;
-    background: rgba(0,0,0,0.4);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--dark-gray-color);
     border: none;
-    padding: 0.5rem;
+    color: white;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     z-index: 10;
+    transition: 
+        transform 0.3s ease,
+        background 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.modal-nav:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: scale(1.2);
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
 }
 
 .modal-nav.prev {
-    left: 1rem;
+    left: -60px;
 }
 
 .modal-nav.next {
-    right: 1rem;
+    right: -60px;
+}
+
+@media (max-width: 1820px) {
+    .modal-nav {
+        display: none;
+    }
 }
 
 .modal-nav.hidden {
@@ -206,6 +268,157 @@
 /* Disables scolling when the modal is open */
 body.disable-scroll {
     overflow: hidden;
+}
+
+.project-title {
+    padding: 20px;
+    color: var(--primary-accent-color);
+}
+
+.project-title::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(to right, rgba(var(--primary-accent-color-rgb), 1), rgba(var(--light-gray-color-rgb), 0));
+    border-radius: 2px;
+    margin-top: 8px;
+}
+
+/* ========== Layered Picture Section ========== */
+#project-section {
+    width: 100%;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(1000px, 1fr));
+    justify-content: center;
+    justify-items: center;
+    gap: 50px;
+}
+
+#project-section h2 {
+    color: var(--secondary-accent-color);
+}
+
+.project-layered-section {
+    width: 100%;
+    display: flex;
+    border-radius: 24px;
+    background: linear-gradient(135deg, rgba(var(--light-gray-color-rgb), 0.5), rgba(50, 50, 50, 0.5));
+    padding: 40px;
+    overflow: visible;
+    position: relative;
+    margin-bottom: 5%;
+}
+
+.project-layered-section p {
+    color: var(--white-color);
+}
+
+.project-layered-content ul {
+    color: var(--white-color);
+    list-style-type: disc inside;
+    font-size: 1.2rem;
+    margin-left: 20px;
+    line-height: 1.4;
+}
+
+.project-layered-content h2 {
+    margin-bottom: 0.5rem;
+    font-size: 2rem;
+    position: relative;
+}
+
+.project-layered-content h2::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(to right, rgba(var(--secondary-accent-color-rgb), 1), rgba(var(--light-gray-color-rgb), 0));
+    border-radius: 2px;
+    margin-top: 8px;
+}
+
+.project-layered-content p {
+    margin-bottom: 0;
+    opacity: 0.9;
+}
+
+.project-layered-content {
+    padding: 40px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.2rem;
+    line-height: 1.6;
+}
+
+.project-image-wrapper {
+    position: relative;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
+    margin-bottom: -10%;
+    border-radius: 50px;
+}
+
+.project-image-wrapper img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.project-image-wrapper:hover img {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+}
+
+.rev {
+    flex-direction: row-reverse;
+}
+
+@media (max-width: 950px) {
+    #project-content {
+        padding: 5px;
+        width: 100%;
+        margin: 0;
+    }
+    
+    #project-section {
+        display: block;
+        padding: 5px;
+    }
+
+    .project-layered-section {
+        padding: 20px;
+        flex-direction: column;
+        font-size: 0.9rem;
+        margin-bottom: 15%;
+    }
+
+    .project-layered-content ul {
+        padding-left: 20px;
+        font-size: 1rem;
+        margin-left: 20px;
+    }
+
+    .project-image-wrapper {
+        padding: 5px;
+        margin-top: 20px;
+    }
+
+    .project-image-wrapper img {
+        margin: 0;
+    }
 }
 
 /* ========================= Keyframes ========================= */
@@ -232,4 +445,114 @@ body.disable-scroll {
 @keyframes slideInRight {
     from { transform: translateX(100%) scale(0.8); opacity: 0; }
     to   { transform: translateX(0) scale(1); opacity: 1; }
+}
+
+/* ========================= Description and Project Info ========================= */
+.overview-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+.project-info {
+    margin-left: auto;
+    flex: 0 0 250px;
+    width: 800px;
+    background: linear-gradient(135deg, rgba(var(--light-gray-color-rgb), 0.5), rgba(50, 50, 50, 0.5));
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.project-info a {
+    color: var(--primary-accent-color);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.description-container a {
+    color: var(--primary-accent-color);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.description-container,
+.key-features-container {
+    margin: 0 20px;
+}
+
+.key-features-container ul{
+    list-style-type: disc inside;
+    font-size: 1.2rem;
+    margin-left: 20px;
+    line-height: 1.4;
+}
+
+.key-features-container hr {
+    height: 3px;
+    background: linear-gradient(to right, rgba(var(--primary-accent-color-rgb), 1), rgba(var(--light-gray-color-rgb), 0));
+    border: none;
+}
+
+.screenshot-container {
+    margin-left: auto;
+}
+
+.img-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    width: 100vw;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 20px;
+}
+
+.img-grid img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    image-rendering: pixelated;
+    border-radius: 20px;
+    box-shadow: 10px 10px 20px rgba(var(--primary-accent-color-rgb), 0.6);
+    will-change: transform;
+}
+
+.tutorial-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-family: Arial, sans-serif;
+}
+
+.tutorial-container h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.tutorial-container p {
+    margin-bottom: 2rem;
+    line-height: 1.5;
+}
+
+.step {
+    margin-bottom: 3rem;
+}
+
+.step h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.step img {
+    display: block;
+    max-width: 100%;
+    margin: 0.5rem 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
 }
