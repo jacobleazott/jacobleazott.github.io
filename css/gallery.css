@@ -141,9 +141,19 @@
 }
 
 .meta-item strong {
-    display: block;
+    font-size: 1.2rem;
+    display: flex;
     font-weight: 600;
     color: var(--secondary-accent-color);
+    align-items: center;
+    gap: 6px;
+    justify-content: center;
+}
+
+.meta-item strong svg.icon {
+    width: 1em;
+    height: 1em;
+    stroke: var(--primary-accent-color);
 }
 
 #active-gallery-container {

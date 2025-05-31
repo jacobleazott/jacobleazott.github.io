@@ -33,6 +33,11 @@ body {
     transform: translateY(20px); /* you can go left/right/up/down */
 }
 
+/* ====================== Favicon ====================== */
+#favicon {
+    stroke: var(--primary-accent-color);
+}
+
 /* ====================== Scrollbar ====================== */
 html::-webkit-scrollbar,
 body::-webkit-scrollbar {
